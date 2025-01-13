@@ -57,7 +57,7 @@ const Navbar = ({ isLoggedIn, user, onLogout }) => {
 
       {/* Sliding Menu */}
       <div
-        className={`fixed top-0 left-0 h-full bg-white shadow-lg w-64 transform ${
+        className={`fixed top-0 left-0 h-full bg-black text-white shadow-lg w-64 transform ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-500 ease-in-out`}
       >
@@ -69,7 +69,7 @@ const Navbar = ({ isLoggedIn, user, onLogout }) => {
         </button>
         <ul className="mt-16 space-y-4 pl-6">
           <li>
-            <Link to="/" className="text-lg hover:text-blue-600">
+            <Link to="/" className="text-lg text-white hover:text-blue-600">
               Home
             </Link>
           </li>
@@ -94,7 +94,7 @@ const Navbar = ({ isLoggedIn, user, onLogout }) => {
       {/* Overlay (optional for closing the menu) */}
       {isMenuOpen && (
         <div
-          className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-30"
+          className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-20"
           onClick={() => setIsMenuOpen(false)}
         ></div>
       )}
