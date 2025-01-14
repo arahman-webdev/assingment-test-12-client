@@ -95,7 +95,7 @@ const Carousel = () => {
               <Fade triggerOnce>
                 <Link
                   to="/available-cars"
-                  className="px-8 py-4 text-lg font-semibold text-white bg-[#1E3A8A] rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300"
+                  className="px-8 py-4 text-lg font-semibold text-white bg-blue-800 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300"
                 >
                   View Available Cars
                 </Link>

@@ -1,11 +1,13 @@
 import React from 'react';
 
+import aboutImg from '../assets/images/slider-2.jpg'
+
 const AboutBuilding = () => {
     return (
         <div>
-            
+
             <section className="bg-[#d8d5f07a] py-20 px-5">
-                <div className="container mx-auto max-w-7xl">
+                <div className="w-4/5 mx-auto ">
                     {/* Section Title */}
                     <h2 className="text-4xl md:text-6xl font-bold text-center text-blue-900 mb-10">
                         About the Building
@@ -13,12 +15,15 @@ const AboutBuilding = () => {
 
                     <div className="flex flex-col lg:flex-row gap-10 items-center">
                         {/* Image Section */}
-                        <div className="lg:w-1/2">
-                            <img
-                                src="https://i.ibb.co/kSkzGQ4/building.jpg"
-                                alt="Modern Building"
-                                className="rounded-lg shadow-lg"
-                            />
+                        <div className="lg:w-1/2 relative flex flex-row">
+                            <div className='relative'>
+                                <img
+                                    src={aboutImg}
+                                    alt="Modern Building"
+                                    className="rounded-lg shadow-lg"
+                                />
+                            </div>
+
                         </div>
 
                         {/* Text Section */}
@@ -48,7 +53,7 @@ const AboutBuilding = () => {
                             {/* Call to Action */}
                             <a
                                 href="#learn-more"
-                                className="inline-block px-8 py-4 text-lg font-medium text-white bg-blue-800 hover:bg-blue-900 rounded-lg shadow-lg transition-all duration-300"
+                                className="inline-block w-full md:w-1/4 text-center px-8 py-4 text-lg font-medium text-white bg-blue-800 hover:bg-blue-900 rounded-lg shadow-lg transition-all duration-300"
                             >
                                 Learn More
                             </a>
