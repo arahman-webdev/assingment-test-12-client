@@ -68,6 +68,9 @@ const Login = () => {
           </p>
         </div>
       </div>
+      <div>
+        right side
+      </div>
     </div>
   );
 };

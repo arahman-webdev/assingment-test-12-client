@@ -5,7 +5,7 @@ const Navbar = ({ isLoggedIn, user, onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
+    <header className="fixed top-0 left-0 w-full bg-white shadow-md z-50 p-5">
       <nav className="flex items-center justify-between px-4 py-3 md:px-8">
         {/* Left: Hamburger Menu */}
         <button
@@ -15,7 +15,7 @@ const Navbar = ({ isLoggedIn, user, onLogout }) => {
           &#9776;
         </button>
 
-        <div className="md:block hidden text-xl font-bold text-orange-600 uppercase">
+        <div className="md:block hidden text-xl font-bold text-[#1E3A8A] uppercase ">
             <Link to="/">MyFlatHub</Link>
           </div>
         {/* Middle: Logo and Center Links */}
