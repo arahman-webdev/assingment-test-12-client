@@ -1,6 +1,7 @@
 import React from 'react';
 
 import aboutImg from '../assets/images/slider-2.jpg'
+import SharedTitle from '../SharedTitle/SharedTitle';
 
 const AboutBuilding = () => {
     return (
@@ -9,9 +10,8 @@ const AboutBuilding = () => {
             <section className="bg-[#d8d5f07a] py-20 px-5">
                 <div className="w-4/5 mx-auto ">
                     {/* Section Title */}
-                    <h2 className="text-4xl md:text-6xl font-bold text-center text-blue-900 mb-10">
-                        About the Building
-                    </h2>
+
+                    <SharedTitle title={"About the Building"}></SharedTitle>
 
                     <div className="flex flex-col lg:flex-row gap-10 items-center">
                         {/* Image Section */}

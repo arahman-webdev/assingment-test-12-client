@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { AuthContext } from '../Providers/AuthProvider';
 import Carousel from '../Components/Carousel';
 import AboutBuilding from '../Components/AboutBuilding';
+import ApartmentLocation from '../Components/ApartmentLocation';
 
 
 const Home = () => {
@@ -12,6 +13,7 @@ const Home = () => {
         <div>
        <Carousel></Carousel>
        <AboutBuilding></AboutBuilding>
+       <ApartmentLocation></ApartmentLocation>
         </div>
     );
 };
