@@ -20,16 +20,19 @@ const routes = createBrowserRouter([
                 path:'/apartment',
                 element: <Apartment></Apartment>
             },
-            {
-                path:'/login',
-                element: <Login></Login>,
-            },
-            {
-                path:'/register',
-                element: <SignUp></SignUp>
-            }
+
         ]
-    }
+    },
+    
+        {
+            path:'/login',
+            element: <Login></Login>,
+        },
+        {
+            path:'/register',
+            element: <SignUp></SignUp>
+        }
+    
 ])
 
 export default routes

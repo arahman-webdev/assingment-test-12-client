@@ -2,8 +2,31 @@ import React from 'react';
 
 import aboutImg from '../assets/images/slider-2.jpg'
 import SharedTitle from '../SharedTitle/SharedTitle';
+import Swal from 'sweetalert2';
 
 const AboutBuilding = () => {
+
+    const handlerCheck = () =>{
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+              });
+            }
+          });
+    }
+
+
     return (
         <div>
 
@@ -52,6 +75,7 @@ const AboutBuilding = () => {
 
                             {/* Call to Action */}
                             <a
+                            onClick={handlerCheck}
                                 href="#learn-more"
                                 className="inline-block w-full md:w-1/4 text-center px-8 py-4 text-lg font-medium text-white bg-blue-800 hover:bg-blue-900 rounded-lg shadow-lg transition-all duration-300"
                             >

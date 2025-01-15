@@ -1,92 +1,194 @@
-import React, { useContext } from 'react';
+import React, {  useState, useEffect, useContext } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import googleImg from '../assets/images/google.png'
+
+import Swal from 'sweetalert2';
 import { AuthContext } from '../Providers/AuthProvider';
+import { updateProfile } from 'firebase/auth';
 
-const SignUp = () => {
 
-  const {googleRegister} = useContext(AuthContext)
 
-  const handlerGoogle = () =>{
-    googleRegister()
-    .then(res =>{
-      console.log(res)
-    })
-  }
 
+const Register = () => {
+    const { createUser, googleRegister, logOutUser, user } = useContext(AuthContext)
+    const [showPassword, setShowPassword] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    // Redirect logged-in users
+    useEffect(() => {
+        if (user) {
+
+            navigate(location?.state?.from || '/', { replace: true }); // Redirect to home if logged in
+        }
+    }, [user, navigate, location?.state?.from]);
+
+    const handleRegister = async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const email = form.email.value;
+      const password = form.password.value;
+      const name = form.name.value;
+      const photo = form.photoUrl.value;
+  
+      if (password.length < 6) {
+          return Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Passwords must be 6 characters or longer!",
+          });
+      }
+  
+      if (!/[a-z]/.test(password)) {
+          return Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Passwords must contain at least one lowercase letter!",
+          });
+      }
+  
+      if (!/[A-Z]/.test(password)) {
+          return Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Passwords must contain at least one uppercase letter!",
+          });
+      }
+  
+      try {
+          const res = await createUser(email, password);
+          console.log("User created:", res.user);
+  
+          // Update profile
+          await updateProfile(res.user, {
+              displayName: name,
+              photoURL: photo,
+          });
+  
+          Swal.fire({
+              title: "Good job!",
+              text: "Welcome back! You are successfully registered!",
+              icon: "success",
+              background: "#CDF7FF",
+              color: "#111",
+              width: "450px",
+          });
+  
+          navigate("/"); // Redirect to the home page
+          form.reset();
+      } catch (error) {
+          console.error("Error during registration:", error);
+  
+          Swal.fire({
+              title: "Error!",
+              text: "This email is already in use. Please provide a different email address.",
+              icon: "error",
+              confirmButtonText: "Ok",
+          });
+      }
+  };
+
+    const handleSignInWithGoogle = () => {
+      googleRegister()
+            .then(() => {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Welcome! Google sign-in successful.",
+                    icon: "success",
+                });
+                navigate(location?.state?.from || '/'); // Redirect to the desired page or home
+            })
+            .catch((error) => {
+                console.error("Google sign-in error:", error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Google sign-in failed. Please try again.",
+                });
+            });
+    };
 
     return (
-        <div
-        className="relative flex items-center justify-center w-full h-screen bg-cover bg-center"
-        style={{
-          backgroundImage: `url('https://i.ibb.co/DKYNzNQ/pexels-fotoaibe-1571468.jpg')`, // Replace this URL with your desired background image
-        }}
-      >
-        {/* Background Overlay */}
-        <div className="absolute inset-0 bg-black bg-opacity-70"></div>
-  
-        {/* Login Form */}
-        <div className="relative bg-white bg-opacity-10 backdrop-blur-md rounded-lg shadow-lg p-8 w-3/12">
-          <h1 className="text-2xl font-bold text-center text-white mb-6">Register</h1>
-          <form>
-            <div className="mb-4">
-              <label className="block text-white text-sm mb-2" htmlFor="email">
-                Enter your email
-              </label>
-              <input
-                type="email"
-                id="email"
-                className="w-full p-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Email"
-              />
+        <div style={{ minHeight: 'calc(100vh - 20px)' }} className="flex items-center w-4/5 mx-auto">
+            <div className="max-w-lg mx-auto bg-gray-50 rounded-lg shadow-lg px-8 py-10 flex flex-col items-center justify-center w-full relative border">
+                <div className='space-y-2'>
+                  <h2 className='text-2xl md:text-4xl font-bold text-center text-blue-900'>Register</h2>
+                <p className='text-blue-950'>Welcome to AptEase</p>
+                </div>
+                <form onSubmit={handleRegister} className="w-full flex flex-col gap-4">
+                    <div className="flex items-start flex-col justify-start">
+                        <label htmlFor="name" className="text-sm text-gray-700 dark:text-gray-200">Name:</label>
+                        <input
+                            type="text"
+                            placeholder="name"
+                            id="name"
+                            name="name"
+                            required
+                            className="w-full px-3 dark:text-gray-200 dark:bg-gray-900 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        />
+                    </div>
+
+                    <div className="flex items-start flex-col justify-start">
+                        <label htmlFor="photoUrl" className="text-sm text-gray-700 dark:text-gray-200">Photo Url:</label>
+                        <input
+                            type="text"
+                            placeholder="Photo url"
+                            id="photoUrl"
+                            name="photoUrl"
+                            className="w-full px-3 dark:text-gray-200 dark:bg-gray-900 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        />
+                    </div>
+
+                    <div className="flex items-start flex-col justify-start">
+                        <label htmlFor="email" className="text-sm text-gray-700 dark:text-gray-200">Email:</label>
+                        <input
+                            type="email"
+                            placeholder="email"
+                            id="email"
+                            name="email"
+                            required
+                            className="w-full px-3 dark:text-gray-200 dark:bg-gray-900 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        />
+                    </div>
+
+                    <div className="flex items-start flex-col justify-start">
+                        <label htmlFor="password" className="text-sm text-gray-700 dark:text-gray-200">Password:</label>
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="password"
+                            id="password"
+                            name="password"
+                            required
+                            className="w-full px-3 dark:text-gray-200 dark:bg-gray-900 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        />
+                    </div>
+
+                    <button type="submit" className="bg-blue-900 hover:bg-blue-950 text-white font-medium py-2 px-4 rounded-md shadow-sm">
+                        Register
+                    </button>
+                </form>
+
+                <div onClick={() => setShowPassword(!showPassword)} className="absolute bottom-56 right-10 cursor-pointer">
+                    {showPassword ? <FaEye /> : <FaEyeSlash />}
+                </div>
+
+                <div className="mt-4 text-center cursor-pointer">
+                    <p>Already have an account? <Link to="/login" className="text-blue-950">Login now</Link></p>
+                </div>
+                <div className="divider">OR</div>
+                <div onClick={handleSignInWithGoogle} className="flex gap-2 cursor-pointer border bg-blue-900 text-white px-5 py-3 rounded-md  transition duration-200">
+                    <img className="w-7 h-7" src={googleImg} alt="Google" />
+                    <h1>Login With Google</h1>
+                </div>
             </div>
-            <div className="mb-4">
-              <label className="block text-white text-sm mb-2" htmlFor="password">
-                Enter your password
-              </label>
-              <input
-                type="password"
-                id="password"
-                className="w-full p-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Password"
-              />
-            </div>
-            <div className="flex items-center justify-between mb-6">
-              <label className="flex items-center text-white text-sm">
-                <input type="checkbox" className="mr-2" />
-                Remember me
-              </label>
-              <a
-                href="/forgot-password"
-                className="text-sm text-blue-400 hover:underline"
-              >
-                Forgot password?
-              </a>
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded transition"
-            >
-              Log In
-            </button>
-          </form>
-          <div className="text-center mt-4">
-            <p className="text-white text-sm">
-              Don’t have an account?{' '}
-              <a
-                href="/register"
-                className="text-blue-400 hover:underline font-medium"
-              >
-                Register
-              </a>
-            </p>
-            <div>
-              <button onClick={handlerGoogle}>
-                Google login
-              </button>
-            </div>
-          </div>
         </div>
-      </div>
     );
 };
 
-export default SignUp;
+export default Register;
+
+
+
+
+

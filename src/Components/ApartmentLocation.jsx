@@ -16,7 +16,7 @@ const ApartmentLocation = () => {
   const apartmentCoordinates = [23.8103, 90.4125]; // Replace with your apartment's latitude and longitude
 
   return (
-    <section className="bg-gray-100 py-10">
+    <section className="bg-[#ECEBF8] py-24">
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <SharedTitle title={"Find Us"}></SharedTitle>
@@ -27,12 +27,12 @@ const ApartmentLocation = () => {
         {/* Map and Details */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Map */}
-          <div className="w-full md:w-1/2 h-72">
+          <div className="w-full md:w-3/4 h-96 z-30">
             <MapContainer
               center={apartmentCoordinates}
               zoom={15}
               scrollWheelZoom={false}
-              className="h-full w-full rounded-lg shadow-lg"
+              className="h-full w-full rounded-lg shadow-xl"
             >
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
