@@ -13,7 +13,7 @@ const AgreementRequest = () => {
     const {data: customerAgreements =[], isLoading, refetch} = useQuery({
         queryKey: ['customerAgreements '],
         queryFn: async()=>{
-            const {data} = await axiosSecure.get(`/agreements/customer/${user?.email}`)
+            const {data} = await axiosSecure.get(`/agreements-request`)
             return data
         }
     })
