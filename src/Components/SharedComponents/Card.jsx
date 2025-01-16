@@ -3,11 +3,13 @@ import { AuthContext } from "../../Providers/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import useRole from "../../Hooks/useRole";
 
 const Card = ({ aprtment }) => {
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
+    const [role] = useRole()
 
     const { _id, apartmentNo, floorNo, blockName, rent, image } = aprtment || {};
 
@@ -17,6 +19,16 @@ const Card = ({ aprtment }) => {
         if (!user) {
             // Redirect to login with the current location
             return navigate("/login", { state: { from: location }, replace: true });
+        }
+
+      
+        if(role === 'admin') {
+            return Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "You are not elligible to make a request!",
+                
+              });
         }
 
         // Get today's date

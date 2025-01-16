@@ -4,11 +4,14 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import googleImg from '../assets/images/google.png'
 import Swal from 'sweetalert2';
 import { AuthContext } from '../Providers/AuthProvider';
+import useAxiosSecure from '../Hooks/useAxiosSecure';
 
 const Login = () => {
 
+  const axiosSecure = useAxiosSecure()
+  const {user} = useContext(AuthContext)
   const [showPassword, setShowPassword] = useState('')
-  const {loginUser} = useContext(AuthContext)
+  const {loginUser, googleRegister} = useContext(AuthContext)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -48,9 +51,37 @@ const Login = () => {
 };
 
 
-const handleSignInWithGoogle = () =>{
-  console.log('clicked')
-}
+    const handleSignInWithGoogle = async () => {
+        try {
+            const result = await googleRegister();
+            const user = result.user;
+    
+            // Send Google user info to the database
+            const userInfo = {
+                name: user.displayName,
+                email: user.email,
+                img_url: user.photoURL,
+                role: 'user',
+            };
+    
+            await axiosSecure.post('/users', userInfo);
+    
+            Swal.fire({
+                title: "Success!",
+                text: "Welcome! Google sign-in successful.",
+                icon: "success",
+            });
+    
+            navigate(location?.state?.from || '/'); // Redirect to the desired page or home
+        } catch (error) {
+            console.error("Google sign-in error:", error);
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Google sign-in failed. Please try again.",
+            });
+        }
+    };
 
 
   return (
