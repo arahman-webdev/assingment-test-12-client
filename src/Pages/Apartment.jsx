@@ -17,8 +17,8 @@ const Apartment = () => {
       }
      })
 
-   
-      
+    
+    
 
     return (
         <div className='mt-10'>
