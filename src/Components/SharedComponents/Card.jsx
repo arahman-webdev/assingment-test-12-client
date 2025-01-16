@@ -1,42 +1,76 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../../Providers/AuthProvider";
+import { useLocation, useNavigate } from "react-router-dom";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import axios from "axios";
 
-const Card = () => {
+const Card = ({aprtment}) => {
 
-    const handleClick = () =>{
-        console.log('clicked')
-    }
+   
+    const {user} = useContext(AuthContext)
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    const {_id, apartmentNo, floorNo, blockName, rent, image} = aprtment || {}
+
+
+
+    const agreementInfo = {
+        customer: {
+          name: user?.displayName,
+          email: user?.email,
+          image: user?.photoURL,
+    
+        },
+        agreementId: _id,
+        blockName: blockName,
+        image: image,
+        rent: rent,
+        floorNo: floorNo,
+        apartmentNo:apartmentNo,
+        status: 'Pending'
+      }
+
+    const handleClick = () => {
+        console.log("clicked");
+      
+        if (!user) {
+          // Redirect to login with the current location
+        return  navigate("/login", { state: { from: location }, replace: true });
+        } 
+        
+
+        axios.post(`${import.meta.env.VITE_API_ULR}/agreements`, agreementInfo)
+        .then(res =>{
+            console.log(res)
+        })
+
+        
+
+      };
     return (
-        <div className=" bg-[#ECEBF8] rounded-lg hover:shadow-xl overflow-hidden border">
+        <div className=" bg-[#ECEBF8] rounded-lg hover:shadow-xl overflow-hidden border transition-shadow duration-500 group">
             {/* Header */}
-            <div className="bg-blue-900 text-white px-4 py-2 text-sm font-medium flex justify-between items-center">
-                <p>
-                    <span className="mr-2">🔑</span> Sold and Rented since{" "}
-                    <span className="font-bold">APR 04, 2023</span>
-                </p>
-            </div>
+
 
             {/* Image */}
             <img
-                src="https://i.ibb.co.com/DKYNzNQ/pexels-fotoaibe-1571468.jpg"
+                src={image}
                 alt="Apartment"
-                className="w-full object-cover"
+                className="w-full sm:h-80 object-cover transform group-hover:scale-110 transition-transform duration-500"
             />
 
             {/* Content */}
             <div className="p-4 space-y-2">
-                <h2 className="text-2xl font-bold text-gray-800">Parq Penthouse 61</h2>
-                <p className="text-gray-600 font-medium">$171,612</p>
+                <h2 className="text-2xl font-bold text-gray-800">{blockName}</h2>
+                <p className="text-gray-600 font-medium">Floor No:{floorNo}</p>
                 <p className="text-gray-600 text-sm">
-                    <span className="text-green-600 font-bold">226 Investors</span>
+                    <span className="text-green-600 font-bold">Apartment No:{apartmentNo}</span>
                 </p>
                 <div className="space-y-1">
                     <p className="flex justify-between">
                         <span>Annual Rental Return</span>
-                        <span className="font-bold">12%</span>
-                    </p>
-                    <p className="flex justify-between">
-                        <span>Projected Value Growth</span>
-                        <span className="font-bold">10%</span>
+                        <span className="font-bold">Rent:${rent}/month</span>
                     </p>
                 </div>
             </div>

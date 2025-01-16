@@ -2,12 +2,16 @@ import React, { useContext, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { AuthContext } from '../../Providers/AuthProvider';
+import useRole from '../../Hooks/useRole';
 
 const Navbar = () => {
   const { user, loading, logOutUser } = useContext(AuthContext)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate()
+  const [role, isLoading]= useRole()
+
+  if(loading, isLoading) return <p>loading.....</p>
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
@@ -50,8 +54,8 @@ const Navbar = () => {
             {!user ? (
               <>
                 <div className='mr-3'>
-                  <Link to="/register" className="text-blue-900 mr-4 px-4 py-3">Log in</Link>
-                  <Link to="/login" className="bg-blue-900 text-white px-4 py-3 rounded-lg">Sign up</Link>
+                  <Link to="/login" className="text-blue-900 mr-4 px-4 py-3">Log in</Link>
+                  <Link to="/register" className="bg-blue-900 text-white px-4 py-3 rounded-lg">Sign up</Link>
                 </div>
               </>
             ) : (
@@ -65,7 +69,7 @@ const Navbar = () => {
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white text-blue-950 rounded-md shadow-lg z-10">
                     <div className="py-2 px-4">{user?.displayName}</div>
-                    <Link to="/dashboard" className="block py-2 px-4 hover:bg-gray-100">Dashboard</Link>
+                    <Link to={role === 'user'? '/dashboard/my-profile': '/dashboard'} className="block py-2 px-4 hover:bg-gray-100">Dashboard</Link>
                     <button
                       className="w-full text-left py-2 px-4 hover:bg-gray-100"
                       onClick={handleLogout}

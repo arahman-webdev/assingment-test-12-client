@@ -1,7 +1,25 @@
 import React from 'react';
 import Card from '../Components/SharedComponents/Card';
+import { useQuery } from '@tanstack/react-query';
+
+import useAxiosSecure from '../Hooks/useAxiosSecure';
+
 
 const Apartment = () => {
+
+  const axiosSecure = useAxiosSecure()
+    
+     const {data: apartments=[], isLoading, refetch} = useQuery({
+      queryKey: ['apartments'],
+      queryFn: async()=>{
+        const res = await axiosSecure.get('/apartment-entries')
+        return res.data
+      }
+     })
+
+   
+      
+
     return (
         <div className='mt-10'>
             <div
@@ -22,10 +40,10 @@ const Apartment = () => {
                 <div className='text-5xl py-8 text-center'>
                     <h2>Reant Our House easily</h2>
                 </div>
-                <div className='grid grid-cols-3 w-4/5 mx-auto gap-4'>
-                    <Card></Card>
-                    <Card></Card>
-                    <Card></Card>
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-4/5 mx-auto gap-6'>
+                {
+                  apartments.map(aprtment =><Card key={aprtment._id} aprtment={aprtment}></Card>)
+                }
                 </div>
             </div>
         </div>

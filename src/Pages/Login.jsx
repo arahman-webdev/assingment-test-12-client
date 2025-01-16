@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import googleImg from '../assets/images/google.png'
 import Swal from 'sweetalert2';
@@ -10,13 +10,14 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState('')
   const {loginUser} = useContext(AuthContext)
   const navigate = useNavigate()
+  const location = useLocation()
 
   const handleLogin = (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
-
+    // 123456Aa
     loginUser(email, password)
         .then((res) => {
             console.log(res);
@@ -28,15 +29,10 @@ const Login = () => {
                 color: "#111",
                 width: '450px',
             });
-            const user = res.user;
-            console.log(user)
-            setUser(user);
-            navigate(location?.state ? location.state: '/')
-            const from = location.state?.from?.pathname || "/"
-            navigate(from, {replace: true})
-            // const from = location.state?.from?.pathname || "/";
-            
-            // navigate(from, { replace: true });
+
+
+            const from = location.state?.from?.pathname || "/";
+            navigate(from, { replace: true });
         })
         .catch((error) => {
             console.log(error);

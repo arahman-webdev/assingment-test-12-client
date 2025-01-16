@@ -5,6 +5,14 @@ import MainLayout from "../Layouts/MainLayout";
 import Login from "../Pages/Login";
 import SignUp from "../Pages/SignUp";
 import Apartment from "../Pages/Apartment";
+import DashboardLyout from "../Layouts/DashboardLayout";
+import Profile from "../DashboardPages/Common/Profile";
+import ManageUser from "../DashboardPages/Admin/ManageUser";
+import PrivateAdmin from "./PrivateDahsboard/PrivateAdmin";
+import ManageCoupon from "../DashboardPages/Admin/ManageCoupon";
+import MakeAnnoouncement from "../DashboardPages/Admin/MakeAnnoouncement";
+import AgreementRequest from "../DashboardPages/Admin/AgreementRequest";
+
 
 const routes = createBrowserRouter([
     {
@@ -13,26 +21,52 @@ const routes = createBrowserRouter([
         errorElement: <ErrorPage></ErrorPage>,
         children: [
             {
-                path:'/',
+                path: '/',
                 element: <Home></Home>,
             },
             {
-                path:'/apartment',
-                element: <Apartment></Apartment>
+                path: '/apartment',
+                element: <Apartment></Apartment>,
             },
-
-        ]
+        ],
     },
-    
-        {
-            path:'/login',
-            element: <Login></Login>,
-        },
-        {
-            path:'/register',
-            element: <SignUp></SignUp>
-        }
-    
-])
+    {
+        path: '/login',
+        element: <Login></Login>,
+    },
+    {
+        path: '/register',
+        element: <SignUp></SignUp>,
+    },
+    // Dashboard layout
+    {
+        path: '/dashboard',
+        element: <DashboardLyout></DashboardLyout>,
+        children: [
+            {
+                path: 'my-profile', // Simplified path
+                element:<Profile></Profile>
+            },
+            {
+                path: 'manage-users',
+                element: <PrivateAdmin><ManageUser></ManageUser></PrivateAdmin>
+            },
+            {
+                path: 'manage-coupon',
+                element: <PrivateAdmin><ManageCoupon></ManageCoupon></PrivateAdmin>
+            },
+            {
+                path: 'make-announcement',
+                element: <PrivateAdmin><MakeAnnoouncement></MakeAnnoouncement> </PrivateAdmin>
+            },
+            {
+                path: 'agreement-request',
+                element: <PrivateAdmin><AgreementRequest></AgreementRequest> </PrivateAdmin>
+            },
+        ],
+    },
+]);
 
-export default routes
+export default routes;
+
+
