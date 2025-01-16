@@ -7,7 +7,32 @@ const AdminRequestRow = ({ agreement, refetch }) => {
     const { _id, blockName, floorNo, apartmentNo, rent, date, customer } = agreement || {};
     const axiosSecure = useAxiosSecure()
 
+    const handleAccept = async () => {
+        try {
+            // Update agreement status
+            await axiosSecure.patch(`${import.meta.env.VITE_API_ULR}/agreements/status/${_id}`, { status: 'Checked' });
 
+            // Update user role
+            await axiosSecure.patch(`${import.meta.env.VITE_API_ULR}/users/role/${customer?.email}`, { role: 'member' });
+
+            Swal.fire('Success', 'Agreement accepted and user role updated to member!', 'success');
+            refetch(); // Refresh the data
+        } catch (error) {
+            Swal.fire('Error', 'Failed to process the request. Try again later.', 'error');
+        }
+    };
+
+    const handleReject = async () => {
+        try {
+            // Update agreement status
+            await axiosSecure.patch(`${import.meta.env.VITE_API_ULR}/agreements/${_id}/status`, { status: 'Checked' });
+
+            Swal.fire('Rejected', 'Agreement has been rejected!', 'info');
+            refetch(); // Refresh the data
+        } catch (error) {
+            Swal.fire('Error', 'Failed to process the request. Try again later.', 'error');
+        }
+    };
 
     return (
         <tr>
