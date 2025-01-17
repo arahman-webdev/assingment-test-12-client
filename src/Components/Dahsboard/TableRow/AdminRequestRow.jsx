@@ -4,16 +4,23 @@ import axios from 'axios';
 import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 
 const AdminRequestRow = ({ agreement, refetch }) => {
-    const { _id, blockName, floorNo, apartmentNo, rent, date, customer } = agreement || {};
+    const { _id, blockName, floorNo, apartmentNo, rent, date, customer, agreementId } = agreement || {};
     const axiosSecure = useAxiosSecure()
+
+    console.log(agreementId)
 
     const handleAccept = async () => {
         try {
             // Update agreement status
             await axiosSecure.patch(`${import.meta.env.VITE_API_ULR}/agreements/status/${_id}`, { status: 'Checked' });
 
+            // Update apartment availability
+            await axiosSecure.patch(`${import.meta.env.VITE_API_ULR}/apartment/availability/${agreementId}`, { availability: 'Unavailable' });
+
             // Update user role
             await axiosSecure.patch(`${import.meta.env.VITE_API_ULR}/users/role/${customer?.email}`, { role: 'member' });
+
+
 
             Swal.fire('Success', 'Agreement accepted and user role updated to member!', 'success');
             refetch(); // Refresh the data
@@ -22,17 +29,43 @@ const AdminRequestRow = ({ agreement, refetch }) => {
         }
     };
 
+
+
     const handleReject = async () => {
         try {
-            // Update agreement status
-            await axiosSecure.patch(`${import.meta.env.VITE_API_ULR}/agreements/${_id}/status`, { status: 'Checked' });
+            // Show confirmation dialog
+            const result = await Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, reject it!",
+            });
+    
+            // If user confirms, update agreement status
+            if (result.isConfirmed) {
+                await axiosSecure.patch(`${import.meta.env.VITE_API_ULR}/agreements/status/${_id}`, { status: 'Checked' });
 
-            Swal.fire('Rejected', 'Agreement has been rejected!', 'info');
-            refetch(); // Refresh the data
+                await axiosSecure.patch(`${import.meta.env.VITE_API_ULR}/apartment/availability/${agreementId}`, { availability: 'available' });
+                
+                // Show success message
+                await Swal.fire({
+                    title: "Rejected!",
+                    text: "Agreement has been rejected successfully.",
+                    icon: "info",
+                });
+    
+                // Refresh the data
+                refetch();
+            }
         } catch (error) {
+            // Show error message
             Swal.fire('Error', 'Failed to process the request. Try again later.', 'error');
         }
     };
+    
 
     return (
         <tr>

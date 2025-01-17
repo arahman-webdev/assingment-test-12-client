@@ -11,7 +11,7 @@ const Card = ({ aprtment }) => {
     const location = useLocation();
     const [role] = useRole()
 
-    const { _id, apartmentNo, floorNo, blockName, rent, image } = aprtment || {};
+    const { _id, apartmentNo, floorNo, blockName,roomNo, rent, image } = aprtment || {};
 
     const handleClick = () => {
         console.log("clicked");
@@ -46,6 +46,7 @@ const Card = ({ aprtment }) => {
             image: image,
             rent: rent,
             floorNo: floorNo,
+            roomNo: roomNo,
             apartmentNo: apartmentNo,
             status: "Pending",
             date: formattedDate, // Add the current date
@@ -88,11 +89,14 @@ const Card = ({ aprtment }) => {
                 <h2 className="text-2xl font-bold text-gray-800">Block Name:{blockName}</h2>
                 <p className="text-gray-600 font-medium">Floor No: {floorNo}</p>
                 <p className="text-gray-600 text-sm">
-                    <span className="text-green-600 font-bold">Apartment No: {apartmentNo}</span>
+                    <span className=" font-bold">Apartment No: {apartmentNo}</span>
+                </p>
+                <p className="text-gray-600 text-sm">
+                    <span className=" font-bold">Room No: {roomNo}</span>
                 </p>
                 <div className="space-y-1">
-                    <p className="flex justify-between">
-                        <span>Annual Rental Return</span>
+                    <p>
+                       
                         <span className="font-bold">Rent: ${rent}/month</span>
                     </p>
                 </div>
