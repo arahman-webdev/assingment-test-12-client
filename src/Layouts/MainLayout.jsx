@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from '../Components/SharedComponents/Navbar';
 import Footer from '../Components/SharedComponents/Footer';
+import { AuthContext } from '../Providers/AuthProvider';
+import LoadingSpinenr from '../Components/SharedComponents/Spinner';
 
 const MainLayout = () => {
+
+    const {user, loading} = useContext(AuthContext)
+    
+    if(loading) return <LoadingSpinenr></LoadingSpinenr>
+
     return (
         <div className='font-manrope'>
             <Navbar></Navbar>

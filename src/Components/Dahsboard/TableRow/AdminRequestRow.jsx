@@ -4,10 +4,26 @@ import axios from 'axios';
 import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 
 const AdminRequestRow = ({ agreement, refetch }) => {
-    const { _id, blockName, floorNo, apartmentNo, rent, date, customer, agreementId } = agreement || {};
+    const { _id, blockName, floorNo,roomNo, apartmentNo, rent, date, customer, agreementId } = agreement || {};
     const axiosSecure = useAxiosSecure()
 
-    console.log(agreementId)
+    console.log(agreement)
+
+    const today = new Date();
+    const formattedDate = today.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+
+    const acceptedInfo = {
+        acceptedId: _id,
+        blockName,
+        floorNo,
+        roomNo,
+        apartmentNo,
+        rent,
+        date: formattedDate,
+        name: customer?.name,
+        email: customer?.email
+        
+    }
 
     const handleAccept = async () => {
         try {
@@ -20,6 +36,7 @@ const AdminRequestRow = ({ agreement, refetch }) => {
             // Update user role
             await axiosSecure.patch(`${import.meta.env.VITE_API_ULR}/users/role/${customer?.email}`, { role: 'member' });
 
+            await axiosSecure.post(`${import.meta.env.VITE_API_ULR}/accepted-request`, acceptedInfo)
 
 
             Swal.fire('Success', 'Agreement accepted and user role updated to member!', 'success');

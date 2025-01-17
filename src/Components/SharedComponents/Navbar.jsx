@@ -11,7 +11,7 @@ const Navbar = () => {
   const navigate = useNavigate()
   const [role, isLoading]= useRole()
 
-  if(loading || isLoading) return <p>loading.....</p>
+
 
 
 
@@ -71,7 +71,7 @@ const Navbar = () => {
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white text-blue-950 rounded-md shadow-lg z-10">
                     <div className="py-2 px-4">{user?.displayName}</div>
-                    <Link to={role === 'admin'? '/dashboard/my-profile': '/dashboard'} className="block py-2 px-4 hover:bg-gray-100">Dashboard</Link>
+                    <Link to={role === 'admin' || role === 'user' || role === 'member'? '/dashboard/my-profile': '/dashboard'} className="block py-2 px-4 hover:bg-gray-100">Dashboard</Link>
                     <button
                       className="w-full text-left py-2 px-4 hover:bg-gray-100"
                       onClick={handleLogout}

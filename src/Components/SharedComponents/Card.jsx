@@ -11,7 +11,7 @@ const Card = ({ aprtment }) => {
     const location = useLocation();
     const [role] = useRole()
 
-    const { _id, apartmentNo, floorNo, blockName,roomNo, rent, image } = aprtment || {};
+    const { _id, apartmentNo, floorNo, blockName, roomNo, rent, image } = aprtment || {};
 
     const handleClick = () => {
         console.log("clicked");
@@ -21,15 +21,17 @@ const Card = ({ aprtment }) => {
             return navigate("/login", { state: { from: location }, replace: true });
         }
 
-      
-        if(role === 'admin') {
+
+        if (role === 'admin' || role === 'member') {
             return Swal.fire({
                 icon: "error",
                 title: "Oops...",
                 text: "You are not elligible to make a request!",
-                
-              });
+
+            });
         }
+
+
 
         // Get today's date
         const today = new Date();
@@ -86,19 +88,25 @@ const Card = ({ aprtment }) => {
 
             {/* Content */}
             <div className="p-4 space-y-2">
-                <h2 className="text-2xl font-bold text-gray-800">Block Name:{blockName}</h2>
-                <p className="text-gray-600 font-medium">Floor No: {floorNo}</p>
-                <p className="text-gray-600 text-sm">
-                    <span className=" font-bold">Apartment No: {apartmentNo}</span>
-                </p>
-                <p className="text-gray-600 text-sm">
-                    <span className=" font-bold">Room No: {roomNo}</span>
-                </p>
-                <div className="space-y-1">
-                    <p>
-                       
-                        <span className="font-bold">Rent: ${rent}/month</span>
-                    </p>
+                <h2 className="text-2xl font-bold text-blue-900">Block Name: <span className="text-gray-400">{blockName}</span></h2>
+                <div className="flex justify-between items-center space-y-3">
+                    <div className="space-y-3">
+                        <p className="text-gray-600 font-medium">Floor No: {floorNo}</p>
+                        <p className="text-gray-600 text-sm">
+                            <span className=" font-bold">Apartment No: {apartmentNo}</span>
+                        </p>
+                    </div>
+                    <div className="space-y-3">
+                        <p className="text-gray-600 text-sm">
+                            <span className=" font-bold">Room No: {roomNo}</span>
+                        </p>
+                        
+                            <p>
+
+                                <span className="font-bold">Rent: ${rent}/month</span>
+                            </p>
+                        
+                    </div>
                 </div>
             </div>
 
