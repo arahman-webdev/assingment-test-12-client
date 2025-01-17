@@ -31,7 +31,7 @@ const AdminRequestRow = ({ agreement, refetch }) => {
 
 
 
-    const handleReject = async () => {
+    const handleReject = async (id) => {
         try {
             // Show confirmation dialog
             const result = await Swal.fire({
@@ -49,7 +49,7 @@ const AdminRequestRow = ({ agreement, refetch }) => {
                 await axiosSecure.patch(`${import.meta.env.VITE_API_ULR}/agreements/status/${_id}`, { status: 'Checked' });
 
                 await axiosSecure.patch(`${import.meta.env.VITE_API_ULR}/apartment/availability/${agreementId}`, { availability: 'available' });
-                
+                await axiosSecure.delete(`${import.meta.env.VITE_API_ULR}/agreement/${id}`)
                 // Show success message
                 await Swal.fire({
                     title: "Rejected!",
@@ -86,7 +86,7 @@ const AdminRequestRow = ({ agreement, refetch }) => {
             </td>
             <td className='px-5 py-5 border-b bg-white text-sm'>
                 <button
-                    onClick={handleReject}
+                    onClick={()=>handleReject(_id)}
                     className='bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300'
                 >
                     Reject
