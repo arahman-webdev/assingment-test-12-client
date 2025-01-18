@@ -30,7 +30,7 @@ const Navbar = () => {
   return (
     <>
       {/* Main Navbar */}
-      <nav className="bg-[#ffffff] text-black w-full p-4 shadow-md fixed top-0 left-0 z-50 font-semibold">
+      <nav className="bg-[#FFFFFF] text-black w-full p-4 shadow-md fixed top-0 left-0 z-50 font-semibold">
         <div className="flex justify-between items-center w-11/12 mx-auto p-3">
           {/* Left side: Hamburger Menu or Website Name */}
           <div className="flex items-center">

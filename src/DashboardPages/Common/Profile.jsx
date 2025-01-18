@@ -13,15 +13,15 @@ const ProfilePage = ({item}) => {
   const [role,isLoading] = useRole()
   const axiosSecure = useAxiosSecure();
 
-  const { data: acceptedItems = [] } = useQuery({
+  const { data: acceptedItem = [] } = useQuery({
     queryKey: ["acceptedItems"],
     queryFn: async () => {
-      const { data } = await axiosSecure.get("/accepted-request");
+      const { data } = await axiosSecure.get(`/accepted-request/${user?.email}`);
       return data;
     },
   });
 
-  console.log(acceptedItems)
+  console.log(acceptedItem)
   console.log(item)
 
 if(isLoading || loading) return <LoadingSpinenr></LoadingSpinenr>
@@ -35,7 +35,7 @@ if(isLoading || loading) return <LoadingSpinenr></LoadingSpinenr>
 if (role === "admin") {
   return <AdminProfile user={user} role={role} loading={loading} />;
 } else if (role === "member") {
-  return <MemberProfile user={user} role={role} loading={loading}/>;
+  return <MemberProfile user={user} role={role} loading={loading} acceptedItem={acceptedItem} />;
 } else {
   return <UserProfile user={user} role={role} loading={loading}/>;
 }

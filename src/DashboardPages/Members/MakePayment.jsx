@@ -1,19 +1,16 @@
-import React, { useContext, useState } from "react";
-import useAxiosSecure from "../../Hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
-import { AuthContext } from "../../Providers/AuthProvider";
-import { loadStripe } from "@stripe/stripe-js";
-import LoadingSpinner from "../../Components/SharedComponents/Spinner";
 
-const stripePromise = loadStripe("YOUR_STRIPE_PUBLIC_KEY");
+import { useQuery } from "@tanstack/react-query";
+import LoadingSpinenr from "../../Components/SharedComponents/Spinner";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import { useContext } from "react";
+import { AuthContext } from "../../Providers/AuthProvider";
+import { Link, NavLink } from "react-router-dom";
 
 const MakePayment = () => {
-  const axiosSecure = useAxiosSecure();
-  const { user, loading } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure()
+  const { user, loading } = useContext(AuthContext)
 
-  const [coupon, setCoupon] = useState("");
-  const [discountedRent, setDiscountedRent] = useState(0);
-  const [isCouponApplied, setIsCouponApplied] = useState(false);
+  
 
   const { data: acceptedItem = {}, isLoading } = useQuery({
     queryKey: ["acceptedItems", user?.email],
@@ -27,48 +24,17 @@ const MakePayment = () => {
     floorNo = "",
     roomNo = "",
     blockName = "",
+    date = "",
     rent = "",
     apartmentNo = "",
   } = acceptedItem;
 
-  if (loading || isLoading) return <LoadingSpinner />;
 
-  const applyCoupon = async () => {
-    try {
-      const { data } = await axiosSecure.post("/validate-coupon", { coupon });
-      if (data.valid) {
-        const discountedAmount = rent - (rent * data.discountPercentage) / 100;
-        setDiscountedRent(discountedAmount);
-        setIsCouponApplied(true);
-        alert(`Coupon applied! New rent: $${discountedAmount}`);
-      } else {
-        alert("Invalid coupon code");
-      }
-    } catch (error) {
-      console.error("Failed to validate coupon", error);
-      alert("Error applying coupon");
-    }
-  };
+  if (loading || isLoading) return <LoadingSpinenr></LoadingSpinenr>;
 
-  const handlePayment = async () => {
-    try {
-      const stripe = await stripePromise;
-      const { data } = await axiosSecure.post("/create-payment-intent", {
-        email: user?.email,
-        amount: discountedRent || rent,
-      });
-
-      const result = await stripe.redirectToCheckout({
-        sessionId: data.sessionId,
-      });
-
-      if (result.error) {
-        console.error(result.error.message);
-      }
-    } catch (error) {
-      console.error("Payment failed", error);
-      alert("Payment failed. Please try again.");
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Payment submitted!");
   };
 
   return (
@@ -77,8 +43,8 @@ const MakePayment = () => {
         <h1 className="text-2xl font-bold text-center text-blue-900 mb-6">
           Make Payment
         </h1>
-        <form className="space-y-6">
-          {/* Display Member Information */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Member Email */}
           <div>
             <label className="block text-gray-700 font-medium mb-2">
               Member Email
@@ -90,8 +56,12 @@ const MakePayment = () => {
               className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-gray-100 cursor-not-allowed"
             />
           </div>
+
+          {/* Floor */}
           <div>
-            <label className="block text-gray-700 font-medium mb-2">Floor</label>
+            <label className="block text-gray-700 font-medium mb-2">
+              Floor
+            </label>
             <input
               type="text"
               value={floorNo}
@@ -99,48 +69,89 @@ const MakePayment = () => {
               className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-gray-100 cursor-not-allowed"
             />
           </div>
-          {/* Add more fields as necessary */}
+
+          {/* Block Name */}
           <div>
-            <label className="block text-gray-700 font-medium mb-2">Rent</label>
+            <label className="block text-gray-700 font-medium mb-2">
+              Block Name
+            </label>
             <input
               type="text"
-              value={`$${discountedRent || rent}`}
+              value={blockName}
               readOnly
               className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-gray-100 cursor-not-allowed"
             />
           </div>
 
-          {/* Coupon Field */}
+          {/* Apartment/Room No */}
           <div>
-            <label className="block text-gray-700 font-medium mb-2">Coupon</label>
-            <div className="flex items-center gap-2">
-              <input
-                type="text"
-                value={coupon}
-                onChange={(e) => setCoupon(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2"
-              />
-              <button
-                type="button"
-                onClick={applyCoupon}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg"
-              >
-                Apply
-              </button>
-            </div>
+            <label className="block text-gray-700 font-medium mb-2">
+              Apartment No / Room No
+            </label>
+            <input
+              type="text"
+              value={apartmentNo}
+              readOnly
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-gray-100 cursor-not-allowed"
+            />
           </div>
 
-          {/* Payment Button */}
-          <div className="text-center">
-            <button
-              type="button"
-              onClick={handlePayment}
-              className="bg-blue-900 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition"
-              disabled={!isCouponApplied}
-            >
-              Pay Now
-            </button>
+          {/* Rent */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-2">
+              Rent
+            </label>
+            <input
+              type="text"
+              value={`$${rent}/month`}
+              readOnly
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-gray-100 cursor-not-allowed"
+            />
           </div>
+
+          {/* Month */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-2">
+              Month
+            </label>
+            <select
+              className="w-full border border-gray-300 rounded-lg px-4 py-2"
+              required
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Select Month
+              </option>
+              {[
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+              ].map((month) => (
+                <option key={month} value={month}>
+                  {month}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Submit Button */}
+          <NavLink to='/dashboard/payment' className="text-center">
+            <button
+              type="submit"
+              className="bg-blue-900 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition"
+            >
+              Submit Payment
+            </button>
+          </NavLink>
         </form>
       </div>
     </div>

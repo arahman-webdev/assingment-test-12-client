@@ -114,7 +114,7 @@ const DashboardLayout = () => {
             role === 'member' &&
             <>
               <NavLink
-                to="/dashboard/payment"
+                to="/dashboard/make-payment"
                 className={({ isActive }) =>
                   `flex items-center px-4 py-2 rounded-md hover:bg-blue-700 ${isActive ? "bg-blue-700" : ""
                   }`

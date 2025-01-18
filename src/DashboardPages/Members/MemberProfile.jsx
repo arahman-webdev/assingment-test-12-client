@@ -1,21 +1,15 @@
 import React, { useContext } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import useAgreementData from "../../Hooks/useAgreementData";
 
 
-const MemberProfile = ({ user, role }) => {
+const MemberProfile = ({ user, role, acceptedItem }) => {
 
   const axiosSecure = useAxiosSecure()
 
 
-  const { data: acceptedItem = [] } = useQuery({
-    queryKey: ["acceptedItems", user?.email],
-    queryFn: async () => {
-      const { data } = await axiosSecure.get(`/accepted-request/${user?.email}`);
-      return data;
-    },
-  });
 
   console.log(acceptedItem)
 
@@ -75,7 +69,7 @@ const MemberProfile = ({ user, role }) => {
               </div>
 
             </div>
-            <Link to='/dashboard/payment' className="flex flex-col col-span-2 bg-blue-900 p-3 text-white">
+            <Link to='/dashboard/make-payment' className="flex flex-col col-span-2 bg-blue-900 p-3 text-white">
               <button>$Pay Now</button>
             </Link>
           </div>

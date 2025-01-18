@@ -13,6 +13,8 @@ import ManageCoupon from "../DashboardPages/Admin/ManageCoupon";
 import MakeAnnoouncement from "../DashboardPages/Admin/MakeAnnoouncement";
 import AgreementRequest from "../DashboardPages/Admin/AgreementRequest";
 import MakePayment from "../DashboardPages/Members/MakePayment";
+import Payment from "../DashboardPages/Members/Payment";
+import PrivateMember from "./PrivateDahsboard/PrivateMember";
 
 
 const routes = createBrowserRouter([
@@ -69,9 +71,14 @@ const routes = createBrowserRouter([
             // member dashboard --------------------------
 
             {
-                path: 'payment',
+                path: 'make-payment',
                 element:<MakePayment></MakePayment>
-            }
+            },
+            {
+                path: 'payment',
+                element:<Payment></Payment>
+            },
+
 
         ],
     },
