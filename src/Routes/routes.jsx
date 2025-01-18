@@ -12,6 +12,7 @@ import PrivateAdmin from "./PrivateDahsboard/PrivateAdmin";
 import ManageCoupon from "../DashboardPages/Admin/ManageCoupon";
 import MakeAnnoouncement from "../DashboardPages/Admin/MakeAnnoouncement";
 import AgreementRequest from "../DashboardPages/Admin/AgreementRequest";
+import MakePayment from "../DashboardPages/Members/MakePayment";
 
 
 const routes = createBrowserRouter([
@@ -43,6 +44,7 @@ const routes = createBrowserRouter([
         path: '/dashboard',
         element: <DashboardLyout></DashboardLyout>,
         children: [
+            // admin dashboard --------------------------------
             {
                 path: 'my-profile', // Simplified path
                 element:<Profile></Profile>
@@ -63,6 +65,14 @@ const routes = createBrowserRouter([
                 path: 'agreement-request',
                 element: <PrivateAdmin><AgreementRequest></AgreementRequest> </PrivateAdmin>
             },
+
+            // member dashboard --------------------------
+
+            {
+                path: 'payment',
+                element:<MakePayment></MakePayment>
+            }
+
         ],
     },
 ]);

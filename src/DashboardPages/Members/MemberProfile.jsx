@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 
 
 const MemberProfile = ({ user, role }) => {
@@ -26,7 +27,7 @@ const MemberProfile = ({ user, role }) => {
       }}
     >
       {/* Profile Card */}
-      <div className="bg-white/60 backdrop-blur-md rounded-lg shadow-lg w-full max-w-3xl">
+      <div className="bg-white/60 backdrop-blur-md rounded-lg shadow-lg w-full max-w-5xl">
         <div className="flex flex-col md:flex-row">
           {/* Profile Section */}
           <div className="p-6 bg-gradient-to-br from-blue-700 to-blue-950 text-white rounded-t-lg md:rounded-tr-none md:rounded-l-lg flex flex-col items-center md:w-1/3">
@@ -43,48 +44,40 @@ const MemberProfile = ({ user, role }) => {
           </div>
 
           {/* Room Info Section */}
-          <div className="p-6 bg-white rounded-b-lg md:rounded-bl-none md:rounded-r-lg md:w-2/3">
+          <div className="p-6 bg-white rounded-b-lg md:rounded-bl-none md:rounded-r-lg md:w-2/3 ">
             <h2 className="text-xl font-semibold text-blue-900 mb-4 text-center">
               Apartment Information
             </h2>
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-4 pr-20">
               <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="font-medium text-gray-700">Accepted Date:</span>
+                <div className="flex justify-between items-center border-b  pb-3">
+                  <span className="font-medium text-gray-700 ">Accepted Date:</span>
                   <span className="text-gray-600">{acceptedItem?.date || "N/A"}</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium text-gray-700">Floor:</span>
+                <div className="flex justify-between items-center border-b pb-3">
+                  <span className="font-medium text-gray-700">Floor No:</span>
                   <span className="text-gray-600">{acceptedItem?.floorNo || "N/A"}</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium text-gray-700">Block:</span>
+                <div className="flex justify-between items-center border-b  pb-3">
+                  <span className="font-medium text-gray-700">Block Name:</span>
                   <span className="text-gray-600">{acceptedItem?.blockName || "N/A"}</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center border-b  pb-3">
                   <span className="font-medium text-gray-700">Room No:</span>
                   <span className="text-gray-600">{acceptedItem?.roomNo || "N/A"}</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium text-gray-700">Rent:</span>
-                  <span className="text-gray-600">
-                    ${acceptedItem?.rent || "N/A"}/month
-                  </span>
-                </div>
-                <div className="flex flex-col col-span-2">
-                  <span className="font-medium text-gray-700">Rent:</span>
-                  <span className="text-gray-600">
-                    ${acceptedItem?.rent || "N/A"}/month
-                  </span>
-                </div>
-                <div className="flex flex-col col-span-2">
+                <div className="flex justify-between items-center border-b  pb-3">
                   <span className="font-medium text-gray-700">Rent:</span>
                   <span className="text-gray-600">
                     ${acceptedItem?.rent || "N/A"}/month
                   </span>
                 </div>
               </div>
+
             </div>
+            <Link to='/dashboard/payment' className="flex flex-col col-span-2 bg-blue-900 p-3 text-white">
+              <button>$Pay Now</button>
+            </Link>
           </div>
         </div>
       </div>
