@@ -1,36 +1,50 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { AuthContext } from '../../Providers/AuthProvider';
 import useRole from '../../Hooks/useRole';
 
 const Navbar = () => {
-  const { user, loading, logOutUser } = useContext(AuthContext)
+  const { user, loading, logOutUser } = useContext(AuthContext);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const navigate = useNavigate()
-  const [role, isLoading]= useRole()
-
-
-
-
+  const [isScrolled, setIsScrolled] = useState(false); // State for scrolling effect
+  const navigate = useNavigate();
+  const [role, isLoading] = useRole();
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
-
   const handleLogout = () => {
-    logOutUser()
-      .then(res => {
-        console.log(res)
-        navigate('/login')
-      })
-  }
+    logOutUser().then((res) => {
+      console.log(res);
+      navigate('/login');
+    });
+  };
+
+  // Scroll event listener
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
     <>
       {/* Main Navbar */}
-      <nav className="bg-[#FFFFFF] text-black w-full p-4 shadow-md fixed top-0 left-0 z-50 font-semibold">
+      <nav
+        className={`fixed border-b border-white top-0 left-0 z-50 w-full p-4 shadow-md font-semibold transition-all duration-300 ${isScrolled ? 'bg-[#FFFFFF] text-black' : 'bg-transparent text-white'
+          }`}
+      >
         <div className="flex justify-between items-center w-11/12 mx-auto p-3">
           {/* Left side: Hamburger Menu or Website Name */}
           <div className="flex items-center">
@@ -40,24 +54,67 @@ const Navbar = () => {
             >
               {isSidebarOpen ? <FaTimes /> : <FaBars />}
             </button>
-            <NavLink to="/" className="text-2xl  text-blue-900 font-bold hover:text-blue-800">
+            <NavLink
+              to="/"
+              className={`text-2xl font-bold ${isScrolled ? 'text-blue-900' : 'text-white'
+                } hover:text-blue-800`}
+            >
               MyFlatHub
             </NavLink>
           </div>
 
           {/* Middle side: Navigation Links (hidden on mobile) */}
           <div className="hidden md:flex space-x-6">
-            <NavLink to="/" className="hover:text-gray-400">Home</NavLink>
-            <NavLink to="/apartment" className="hover:text-gray-400">Apartment</NavLink>
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `hover:text-blue-600 ${isActive
+                  ? 'text-blue-600 font-bold' // Active link styles
+                  : isScrolled
+                    ? 'text-blue-900'
+                    : 'text-white'
+                }`
+              }
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/apartment"
+              className={({ isActive }) =>
+                `hover:text-blue-600 ${isActive
+                  ? 'text-blue-600  font-bold' // Active link styles
+                  : isScrolled
+                    ? 'text-blue-900'
+                    : 'text-white'
+                }`
+              }
+            >
+              Apartment
+            </NavLink>
+
           </div>
 
           {/* Right side: Login/Profile */}
           <div className="relative">
             {!user ? (
               <>
-                <div className='mr-3'>
-                  <Link to="/login" className="text-blue-900 mr-4 px-4 py-3">Log in</Link>
-                  <Link to="/register" className="bg-blue-900 text-white px-4 py-3 rounded-lg">Sign up</Link>
+                <div className="mr-3">
+                  <Link
+                    to="/login"
+                    className={`mr-4 px-4 py-3 ${isScrolled ? 'text-blue-700' : 'text-white'
+                      }`}
+                  >
+                    Log in
+                  </Link>
+                  <Link
+                    to="/register"
+                    className={`px-4 py-3 rounded-lg ${isScrolled
+                        ? 'bg-blue-900 text-white'
+                        : 'bg-white text-blue-900'
+                      }`}
+                  >
+                    Sign up
+                  </Link>
                 </div>
               </>
             ) : (
@@ -65,13 +122,23 @@ const Navbar = () => {
                 <img
                   src={user.photoURL || '/default-avatar.jpg'}
                   alt="Profile"
-                  className="w-10 h-10 rounded-full cursor-pointer ring-2 ring-blue-900 transition"
+                  className={`w-10 h-10 rounded-full cursor-pointer ring-2 transition ${isScrolled ? 'ring-white' : 'ring-blue-900'
+                    }`}
                   onClick={toggleDropdown}
                 />
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white text-blue-950 rounded-md shadow-lg z-10">
                     <div className="py-2 px-4">{user?.displayName}</div>
-                    <Link to={role === 'admin' || role === 'user' || role === 'member'? '/dashboard/my-profile': '/dashboard'} className="block py-2 px-4 hover:bg-gray-100">Dashboard</Link>
+                    <Link
+                      to={
+                        role === 'admin' || role === 'user' || role === 'member'
+                          ? '/dashboard/my-profile'
+                          : '/dashboard'
+                      }
+                      className="block py-2 px-4 hover:bg-gray-100"
+                    >
+                      Dashboard
+                    </Link>
                     <button
                       className="w-full text-left py-2 px-4 hover:bg-gray-100"
                       onClick={handleLogout}
@@ -83,12 +150,13 @@ const Navbar = () => {
               </div>
             )}
           </div>
+         
         </div>
       </nav>
 
       {/* Sidebar for Mobile with Smooth Transition */}
       <div
-        className={`fixed inset-0 z-40 bg-black bg-opacity-50 transition-opacity duration-300 ${isSidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        className={`fixed inset-0 z-50 bg-black bg-opacity-50 transition-opacity duration-300 ${isSidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
         onClick={toggleSidebar}
       >
@@ -98,22 +166,36 @@ const Navbar = () => {
           onClick={(e) => e.stopPropagation()}
         >
           <div className="text-lg font-semibold mb-6">
-            <Link to="/" onClick={toggleSidebar}>Apartment Management</Link>
+            <Link to="/" onClick={toggleSidebar}>
+              Apartment Management
+            </Link>
           </div>
           <ul className="space-y-4">
             <li>
-              <Link to="/" className="hover:text-gray-400" onClick={toggleSidebar}>
+              <Link
+                to="/"
+                className="hover:text-gray-400"
+                onClick={toggleSidebar}
+              >
                 Home
               </Link>
             </li>
             <li>
-              <Link to="/apartment" className="hover:text-gray-400" onClick={toggleSidebar}>
+              <Link
+                to="/apartment"
+                className="hover:text-gray-400"
+                onClick={toggleSidebar}
+              >
                 Apartment
               </Link>
             </li>
             {!user ? (
               <li>
-                <Link to="/login" className="hover:text-gray-400" onClick={toggleSidebar}>
+                <Link
+                  to="/login"
+                  className="hover:text-gray-400"
+                  onClick={toggleSidebar}
+                >
                   Login
                 </Link>
               </li>
@@ -137,7 +219,7 @@ const Navbar = () => {
                 <button
                   className="w-full text-left py-2 px-4 mt-2 hover:bg-gray-100"
                   onClick={() => {
-                    onLogout();
+                    handleLogout();
                     toggleSidebar();
                   }}
                 >

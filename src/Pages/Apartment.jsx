@@ -36,7 +36,7 @@ const Apartment = () => {
     };
 
     return (
-        <div className='mt-10'>
+        <div className=''>
             {/* Hero Section */}
             <div
                 className="relative bg-cover bg-center h-96 md:h-[500px]"
@@ -52,7 +52,7 @@ const Apartment = () => {
 
             {/* Main Content */}
             <div>
-                <div className='text-5xl py-8 text-center'>
+                <div className='text-5xl py-8 text-center z-20'>
                     <h2>Rent Our Houses Easily</h2>
                 </div>
                 {isLoading ? (
