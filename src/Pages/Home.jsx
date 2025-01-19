@@ -4,6 +4,9 @@ import Carousel from '../Components/Carousel';
 import AboutBuilding from '../Components/AboutBuilding';
 import ApartmentLocation from '../Components/ApartmentLocation';
 import Cover from '../Components/SharedComponents/Cover';
+import Services from '../Components/Services';
+import Testimonial from '../Components/Testimonial';
+import QuestionAnswers from '../Components/QuestionAnswers';
 
 
 
@@ -17,6 +20,9 @@ const Home = () => {
        <Carousel></Carousel>
        <AboutBuilding></AboutBuilding>
        <Cover></Cover>
+       <Services></Services>
+       <QuestionAnswers />
+       <Testimonial></Testimonial>
        <ApartmentLocation></ApartmentLocation>
         </div>
     );

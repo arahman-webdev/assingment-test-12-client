@@ -8,14 +8,14 @@ import { Link } from "react-router-dom";
 const Carousel = () => {
   const slides = [
     {
-      img: "https://i.ibb.co/xmzgt9C/slider-3-1.jpg",
+      img: "https://i.ibb.co.com/cxsZsf4/slider-11.jpg",
       title: "Dream and Build",
       description:
         "There are many variations of passages of lorem but the majority have suffered alteration in some form.",
       buttonText: "Donate Now",
     },
     {
-      img: "https://i.ibb.co/wJTymsC/slider-5.png",
+      img: "https://i.ibb.co.com/9rrWcwY/pexels-homelane-com-492179-1776574.jpg",
       title: "Foundation in 1987",
       description:
         "Discover the perfect car for your journey. Your next adventure begins here—find the car!",

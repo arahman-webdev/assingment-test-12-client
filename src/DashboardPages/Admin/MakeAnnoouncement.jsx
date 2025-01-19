@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import useAxiosSecure from '../../Hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
 
 const MakeAnnouncement = () => {
   
   
-  
+  const axiosSecure = useAxiosSecure()
   
 
   const handleSubmit = async (e) => {
@@ -13,19 +15,30 @@ const MakeAnnouncement = () => {
     const title = form.title.value;
     const description = form.description.value;
     const announcementData = {
-      title: title,
-      description: description,
+      title,
+      description
     };
 
     try {
       
-      const response = await axios.post('/save-announcement', announcementData);
+      const response = await axiosSecure.post('/save-announcement', announcementData);
+      const data = response.data;
      
-     console.log(response.data)
+     if(data.insertedId){
+        Swal.fire({
+            title: "Good job!",
+            text: "Succefully added your announcement!",
+            icon: "success"
+          });
+     }
+
+
      
     } catch (error) {
       console.log(error)
-    } 
+    }finally{
+        form.reset()
+    }
   };
 
   return (
@@ -38,8 +51,7 @@ const MakeAnnouncement = () => {
             type="text"
             id="title"
             name="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900"
           />
@@ -49,8 +61,7 @@ const MakeAnnouncement = () => {
           <textarea
             id="description"
             name="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            
             required
             rows="4"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900"
@@ -58,16 +69,11 @@ const MakeAnnouncement = () => {
         </div>
         <button
           type="submit"
-          disabled={isSubmitting}
+          
           className="w-full py-2 px-4 bg-blue-900 text-white font-semibold rounded-md hover:bg-blue-800 focus:ring-2 focus:ring-blue-900"
         >
-          {isSubmitting ? 'Submitting...' : 'Save Announcement'}
+          Submit
         </button>
-        {message && (
-          <p className={`mt-4 text-center ${message.includes('success') ? 'text-green-500' : 'text-red-500'}`}>
-            {message}
-          </p>
-        )}
       </form>
     </div>
   );

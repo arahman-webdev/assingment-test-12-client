@@ -42,12 +42,12 @@ const Navbar = () => {
     <>
       {/* Main Navbar */}
       <nav
-        className={`fixed border-b border-white top-0 left-0 z-50 w-full p-4 shadow-md font-semibold transition-all duration-300 ${isScrolled ? 'bg-[#FFFFFF] text-black' : 'bg-transparent text-white'
+        className={`fixed  top-0 left-0 z-50 w-full p-4 shadow-md font-semibold transition-all duration-300 ${isScrolled ? 'bg-[#FFFFFF] text-black' : 'bg-black opacity-65 text-white'
           }`}
       >
-        <div className="flex justify-between items-center w-11/12 mx-auto p-3">
+        <div className="flex justify-between items-center w-11/12 mx-auto p-3 z-50">
           {/* Left side: Hamburger Menu or Website Name */}
-          <div className="flex items-center">
+          <div className="flex items-center text-blue-900">
             <button
               className="text-2xl md:hidden mr-4 focus:outline-none"
               onClick={toggleSidebar}
@@ -156,18 +156,18 @@ const Navbar = () => {
 
       {/* Sidebar for Mobile with Smooth Transition */}
       <div
-        className={`fixed inset-0 z-50 bg-black bg-opacity-50 transition-opacity duration-300 ${isSidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        className={`fixed inset-0 z-50 bg-black bg-opacity-50 transition-opacity duration-300 ${isSidebarOpen ? 'opacity-95' : 'opacity-0 pointer-events-none'
           }`}
         onClick={toggleSidebar}
       >
         <div
-          className={`fixed top-0 left-0 h-full w-64 bg-gray-800 text-white p-4 shadow-lg transform transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          className={`fixed top-0 left-0 h-full w-64 bg-[#233876] text-white p-4 shadow-lg transform transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
             }`}
           onClick={(e) => e.stopPropagation()}
         >
           <div className="text-lg font-semibold mb-6">
             <Link to="/" onClick={toggleSidebar}>
-              Apartment Management
+              
             </Link>
           </div>
           <ul className="space-y-4">

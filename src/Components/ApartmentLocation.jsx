@@ -5,6 +5,7 @@ import L from 'leaflet';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import SharedTitle from '../SharedTitle/SharedTitle';
+import { FaEnvelope, FaHome, FaPhone, FaPhoneVolume, FaVoicemail } from 'react-icons/fa';
 
 // Configure default marker icon
 L.Icon.Default.mergeOptions({
@@ -48,15 +49,19 @@ const ApartmentLocation = () => {
 
           {/* Location Details */}
           <div className="w-full md:w-1/2">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+            <h3 className="text-xl font-semibold text-blue-950 mb-4">
               Our Address
             </h3>
-            <p className="text-gray-600 mb-4">
-              AptEase Apartments <br />
-              123 Main Street, Gulshan <br />
-              Dhaka, Bangladesh
+            <p className=" mb-4 flex gap-2 items-center text-gray-600">
+              <span className='text-blue-950 text-xl'><FaHome /></span>
+              <span>66 Road Broklyn Street, 600
+                New York, USA, Gulshan <br />
+                Dhaka, Bangladesh</span>
+              
             </p>
-            <h4 className="text-lg font-semibold text-gray-800 mb-2">
+            <p className='flex gap-2 items-center mb-4 text-gray-600'><span className='text-blue-950 text-xl '><FaEnvelope></FaEnvelope></span><span>mdarahman5645@gmail.com</span></p>
+            <p className='flex gap-2 items-center mb-4 text-gray-600'><span className='text-blue-950 text-xl'><FaPhone /></span><span>+8801719617907</span></p>
+            <h4 className="text-lg font-semibold text-blue-950 mb-2">
               How to Get Here:
             </h4>
             <ul className="list-disc list-inside text-gray-600 space-y-2">
