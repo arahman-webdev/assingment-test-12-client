@@ -2,31 +2,33 @@ import React, { useState } from 'react';
 import Card from '../Components/SharedComponents/Card';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../Hooks/useAxiosSecure';
-import { Spinner } from 'flowbite-react';
 import LoadingSpinenr from '../Components/SharedComponents/Spinner';
-
 
 const Apartment = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 6; // Number of items per page
+    const [minRent, setMinRent] = useState(''); // State for minimum rent
+    const [maxRent, setMaxRent] = useState(''); // State for maximum rent
+    const [searchParams, setSearchParams] = useState(null); // Stores search criteria
+    const itemsPerPage = 6;
 
     const axiosSecure = useAxiosSecure();
 
-    // Fetch paginated apartments
+    // Fetch apartments based on pagination and search criteria
     const { data, isLoading } = useQuery({
-        queryKey: ['apartments', currentPage],
+        queryKey: ['apartments', currentPage, searchParams],
         queryFn: async () => {
-          const res = await axiosSecure.get('/apartment-items', {
-            params: {
-              page: currentPage,
-              limit: itemsPerPage,
-            },
-          });
-          return res.data;
+            const res = await axiosSecure.get('/apartment-items', {
+                params: {
+                    page: currentPage,
+                    limit: itemsPerPage,
+                    minRent: searchParams?.minRent || 0,
+                    maxRent: searchParams?.maxRent || Infinity,
+                },
+            });
+            return res.data;
         },
-        keepPreviousData: true, // Keep previous data while fetching new data
-      });
-      
+        keepPreviousData: true,
+    });
 
     const apartments = data?.items || [];
     const totalPages = Math.ceil(data?.total / itemsPerPage);
@@ -35,8 +37,14 @@ const Apartment = () => {
         setCurrentPage(page);
     };
 
+    // Handle Rent Range Search
+    const handleSearch = () => {
+        setSearchParams({ minRent, maxRent });
+        setCurrentPage(1); // Reset to the first page when a new search is performed
+    };
+
     return (
-        <div className=''>
+        <div>
             {/* Hero Section */}
             <div
                 className="relative bg-cover bg-center h-96 md:h-[500px]"
@@ -50,33 +58,69 @@ const Apartment = () => {
                 </div>
             </div>
 
+            {/* Rent Range Search Section */}
+            <div className="flex justify-center my-4 space-x-4 py-20">
+                <input
+                    type="number"
+                    value={minRent}
+                    onChange={(e) => setMinRent(e.target.value)}
+                    placeholder="Min Rent ($)"
+                    className="px-4 py-2 md:w-64 w-44 border rounded-md"
+                />
+                <input
+                    type="number"
+                    value={maxRent}
+                    onChange={(e) => setMaxRent(e.target.value)}
+                    placeholder="Max Rent ($)"
+                    className="px-4 py-2 border md:w-64 w-44 rounded-md"
+                />
+                <button
+                    onClick={handleSearch}
+                    className="px-4 py-2 md:w-36 bg-blue-500 text-white rounded-md"
+                >
+                    Search
+                </button>
+            </div>
+
             {/* Main Content */}
             <div>
-                <div className='text-5xl py-8 text-center z-20'>
-                    <h2>Rent Our Houses Easily</h2>
-                </div>
+
                 {isLoading ? (
-                   <LoadingSpinenr></LoadingSpinenr>
+                    <LoadingSpinenr />
                 ) : (
                     <>
-                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-4/5 mx-auto gap-6'>
-                            {apartments.map((apartment) => (
-                                <Card key={apartment._id} aprtment={apartment} />
-                            ))}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-4/5 mx-auto gap-6">
+                            {
+                                apartments.length > 0 ? <>
+                                    {
+                                        apartments.map((apartment) => (
+                                            <Card key={apartment._id} aprtment={apartment} />
+                                        ))
+                                    }</> :
+                                    <>
+                                        <div className='col-span-3 flex justify-center items-center min-h-screen'>
+                                            <p className='text-center'>No content card</p>
+                                        </div>
+                                    </>
+                            }
                         </div>
 
                         {/* Pagination Controls */}
-                        <div className="flex justify-center items-center space-x-2 mt-6">
-                            {Array.from({ length: totalPages }, (_, index) => (
-                                <button
-                                    key={index}
-                                    className={`px-4 py-2 rounded ${currentPage === index + 1 ? 'bg-blue-900 text-white' : 'bg-gray-200 text-black'}`}
-                                    onClick={() => handlePageChange(index + 1)}
-                                >
-                                    {index + 1}
-                                </button>
-                            ))}
-                        </div>
+                        {
+                            apartments.length > 0 && (
+                                <div className="flex justify-center items-center space-x-2 mt-6">
+                                    {Array.from({ length: totalPages }, (_, index) => (
+                                        <button
+                                            key={index}
+                                            className={`px-4 py-2 rounded ${currentPage === index + 1 ? 'bg-blue-900 text-white' : 'bg-gray-200 text-black'}`}
+                                            onClick={() => handlePageChange(index + 1)}
+                                        >
+                                            {index + 1}
+                                        </button>
+                                    ))}
+                                </div>
+                            )
+                        }
                     </>
                 )}
             </div>

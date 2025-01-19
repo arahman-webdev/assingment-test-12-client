@@ -49,7 +49,7 @@ const Cover = ({ img, title }) => {
             <div
                 className="">
                 <div
-                    className="relative bg-cover bg-center "
+                    className="relative bg-cover bg-center"
                     style={{
                         backgroundImage: `url('https://i.ibb.co.com/DKYNzNQ/pexels-fotoaibe-1571468.jpg')`,
                     }}

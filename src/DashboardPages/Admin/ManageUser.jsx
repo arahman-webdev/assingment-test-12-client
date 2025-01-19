@@ -9,7 +9,7 @@ const ManageUser = () => {
 
     // const [members, setMembers] = useState([])
 
-    const {data: members = [], isLoading} = useQuery({
+    const {data: members = [], isLoading, refetch} = useQuery({
         queryKey: ['members'],
         queryFn: async()=>{
             const {data} = await axiosSecure.get('/users')

@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { FaHandshake } from 'react-icons/fa';
+import SharedTitle from '../SharedTitle/SharedTitle';
+import { LuBuilding, LuBuilding2 } from 'react-icons/lu';
 
 const QuestionAnswers = () => {
     const [activeIndex, setActiveIndex] = useState(null);
 
     const faqs = [
-        { question: 'How To Process The Function For Construction?', answer: 'You need to follow a systematic process involving proper planning and execution.' },
-        { question: 'Where Should I Incorporate My Business?', answer: 'Consider the best location based on regulations, taxes, and market access.' },
-        { question: 'How There Are Many Variations Of Passages', answer: 'Each passage may differ in terms of the requirements and the application process.' },
-        { question: 'How Much Should I Capitalize With At The Beginning?', answer: 'It depends on your business needs and initial investment requirements.' },
-        { question: 'What About Our Safety Measures', answer: 'Safety is our top priority with comprehensive measures in place.' },
+        { question: 'How do I request building maintenance services?', answer: 'You can request maintenance services by logging into your account on our website or mobile app and submitting a maintenance request. Our team will get back to you promptly to address the issue.' },
+        { question: 'What cleaning services do you provide for buildings?', answer: 'We offer comprehensive cleaning services, including daily cleaning, deep cleaning, window cleaning, and waste management for residential and commercial buildings.' },
+        { question: 'How do you ensure the safety of my property?', answer: 'Our security services include 24/7 monitoring, CCTV surveillance, and professionally trained security personnel to ensure the safety and security of your property.' },
+        { question: 'Can I customize the services according to my building’s needs?', answer: 'Yes, we provide flexible service packages that can be tailored to meet the specific requirements of your building, whether its maintenance, cleaning, or security' },
+        { question: 'What is the process for emergency repairs?', answer: 'For emergency repairs, you can call our 24/7 helpline or use our mobile app to report the issue. Our team will prioritize your request and send a technician as soon as possible.' },
     ];
 
     const toggleFAQ = (index) => {
@@ -32,7 +34,7 @@ const QuestionAnswers = () => {
                     </div>
                     <div className='flex-1 bg-blue-900 flex justify-center flex-col p-5'>
                         <h1 className="text-4xl font-bold mb-6 leading-tight">
-                            Economy Needs A Healthy Steel Industry
+                        Effortless Building Management for a Better Tomorrow
                         </h1>
                         <div>
                             <button className="bg-blue-500 text-white font-semibold px-6 py-2 rounded">
@@ -42,7 +44,7 @@ const QuestionAnswers = () => {
                     </div>
                 </div>
                 <div className='bg-[#ECEBF8] md:px-16 md:py-24 xl:px-36 xl:py-44 px-20 py-24 flex items-center'>
-                    <span className='text-4xl text-blue-900 '><FaHandshake /></span> <p className='text-4xl text-blue-900 font-bold'>We’re Servicing a Global Clients in More than 50 Countries</p>
+                    <span className='text-3xl text-blue-900 mr-3'><LuBuilding2 /><FaHandshake /></span> <p className='text-4xl text-blue-900 font-bold'>We’re Servicing a Global Clients in More than 50 Countries</p>
                 </div>
 
             </div>
@@ -54,8 +56,8 @@ const QuestionAnswers = () => {
                 {/* FAQ Section */}
                 <div className='sm:w-4/6 w-full'>
                     <div className='mb-10'>
-                        <h2 className="text-gray-700 text-xl font-bold uppercase mb-6">Our FAQs</h2>
-                        <p className='sm:text-5xl text-3xl font-bold'>Frequently Asked Questions</p>
+                        <h2 className="text-gray-700 text-xl font-bold  mb-6">Our FAQs</h2>
+                        <SharedTitle title={"Frequently Asked Questions"}></SharedTitle>
                     </div>
                     {faqs.map((faq, index) => (
                         <div

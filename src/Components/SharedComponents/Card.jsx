@@ -13,6 +13,8 @@ const Card = ({ aprtment }) => {
 
     const { _id, apartmentNo, floorNo, blockName, roomNo, rent, image } = aprtment || {};
 
+    console.log(aprtment)
+
     const handleClick = () => {
         console.log("clicked");
 
@@ -83,7 +85,7 @@ const Card = ({ aprtment }) => {
             <img
                 src={image}
                 alt="Apartment"
-                className="w-full sm:h-80 object-cover transform group-hover:scale-110 transition-transform duration-500"
+                className="w-full sm:h-64 lg:h-72 object-cover transform group-hover:scale-110 transition-transform duration-500"
             />
 
             {/* Content */}

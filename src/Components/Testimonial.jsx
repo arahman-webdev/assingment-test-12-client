@@ -9,33 +9,38 @@ const Testimonial = () => {
     const services = [
         {
             id: 1,
-            title: 'Building Maintenance',
-            description: 'We provide top-notch maintenance services for your buildings.We provide top-notch maintenance services for your buildings.We provide top-notch maintenance services for your buildings.We provide top-notch maintenance services for your buildings.We provide top-notch maintenance services for your buildings.We provide top-notch maintenance services for your buildings.',
-            image: 'https://i.ibb.co.com/T8JgYvB/card-4.jpg',
+            name: 'John D ',
+            title: 'Apartment Owner',
+            description: 'This website made managing my property so much easier! The interface is user-friendly, and I can track maintenance requests in real time. Highly recommend their services.',
+            image: 'https://i.ibb.co.com/mGCW77M/team-image-6.png',
         },
         {
             id: 2,
-            title: 'Cleaning Services',
-            description: 'Keep your premises spotless with our professional cleaning team.',
-            image: 'https://i.ibb.co.com/T8JgYvB/card-4.jpg',
+            name: 'Sarah M',
+            title: 'Business Property Manager',
+            description: "Their building management solutions are exceptional. The team is professional, and the website's tools help me stay on top of everything efficiently.",
+            image: 'https://i.ibb.co.com/rccbv9R/team-3.jpg',
         },
         {
             id: 3,
-            title: 'Security Services',
-            description: 'Ensure safety with our reliable security solutions.',
-            image: 'https://i.ibb.co.com/T8JgYvB/card-4.jpg',
+            name: 'Mark Rahul',
+            title: 'Homeowner',
+            description: 'What I love most is the transparency and responsiveness. I can easily report issues, and they are resolved quickly. The platform is a game-changer for building management.',
+            image: 'https://i.ibb.co.com/jMXKwkR/user2.png',
         },
         {
             id: 4,
-            title: 'Electrical Repairs',
-            description: 'Fast and reliable electrical repair services for your buildings.',
-            image: 'https://i.ibb.co.com/T8JgYvB/card-4.jpg',
+            name: 'Emma Line',
+            title: 'Commercial Property Owner',
+            description: "The website has everything I need—from maintenance tracking to tenant communication. It's an all-in-one solution that has saved me so much time and stress.",
+            image: 'https://i.ibb.co.com/DLjRP9Z/customer2.jpg',
         },
         {
             id: 5,
-            title: 'Pest Control',
-            description: 'Effective pest control solutions for your property.',
-            image: 'https://i.ibb.co.com/T8JgYvB/card-4.jpg',
+            name: 'David',
+            title: 'Property Developer',
+            description: 'Managing multiple properties used to be a nightmare, but this website simplified everything. The seamless design and excellent customer support are top-notch!',
+            image: 'https://i.ibb.co.com/mXp0G39/customer1.jpg',
         },
     ];
 
@@ -64,7 +69,7 @@ const Testimonial = () => {
                 className="w-4/5 max-w-6xl mx-auto" // Adjust width for larger displays
             >
                 {services.map((service) => (
-                    <SwiperSlide key={service.id} className="pt-20">
+                    <SwiperSlide key={service.id} className="pt-20 pb-6">
                         <div className="bg-white shadow-lg rounded-lg relative">
                             {/* Image at the top, half inside/outside the card */}
                             <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
@@ -76,7 +81,8 @@ const Testimonial = () => {
                             </div>
 
                             {/* Card Content */}
-                            <div className="pt-20 pb-6 px-6">
+                            <div className="pt-20 pb-6 px-6 space-y-7 text-center">
+                                <span>{service?.name}</span>
                                 <h3 className="text-xl text-blue-900 font-semibold text-center mb-2">{service.title}</h3>
                                 <p className="text-center text-gray-700">{service.description}</p>
                             </div>
