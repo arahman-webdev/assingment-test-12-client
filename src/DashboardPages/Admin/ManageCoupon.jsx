@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../Hooks/useAxiosSecure';
 import LoadingSpinenr from '../../Components/SharedComponents/Spinner';
+import CouponRow from '../../Components/Dahsboard/TableRow/CouponRow';
 
 
 const ManageCoupon = () => {
@@ -17,15 +18,15 @@ const ManageCoupon = () => {
 
 
 
-  const {data: coupons =[], isLoading, refetch} = useQuery({
+  const { data: coupons = [], isLoading, refetch } = useQuery({
     queryKey: ['coupons'],
-    queryFn: async()=>{
-      const {data} = await axiosSecure.get('/coupons')
+    queryFn: async () => {
+      const { data } = await axiosSecure.get('/coupons')
       return data
     }
   })
 
-if(isLoading) return <LoadingSpinenr></LoadingSpinenr>
+  if (isLoading) return <LoadingSpinenr></LoadingSpinenr>
 
 
   console.log(coupons)
@@ -52,6 +53,7 @@ if(isLoading) return <LoadingSpinenr></LoadingSpinenr>
         text: 'The coupon has been added successfully!',
       });
       setShowModal(false);
+      refetch()
       form.reset();
     } catch (error) {
       Swal.fire({
@@ -69,59 +71,58 @@ if(isLoading) return <LoadingSpinenr></LoadingSpinenr>
   return (
     <div className="p-6">
       <div>
-      <div className='container mx-auto px-4 sm:px-8'>
-                <div className='py-8'>
-                    <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
-                        <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
-                            <table className='min-w-full leading-normal'>
-                                <thead className='bg-[#233876] text-white'>
-                                    <tr >
-                                        <th
-                                            scope='col'
-                                            className='px-5 py-3   border-b border-gray-200  text-left text-sm uppercase font-normal'
-                                        >
-                                            User Name
-                                        </th>
-                                        <th
-                                            scope='col'
-                                            className='px-5 py-3  border-b border-gray-200   text-left text-sm uppercase font-normal'
-                                        >
-                                            User Email
-                                        </th>
-                                        <th
-                                            scope='col'
-                                            className='px-5 py-3  border-b border-gray-200   text-left text-sm uppercase font-normal'
-                                        >
-                                            User Email
-                                        </th>
-                                        <th
-                                            scope='col'
-                                            className='px-5 py-3  border-b border-gray-200   text-left text-sm uppercase font-normal'
-                                        >
-                                            Action
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        coupons.map(coupon => <MemberTableRow key={coupon._id} coupon={coupon} refetch={refetch} />)
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-      </div>
-      <h1 className="text-2xl font-bold mb-4">Manage Coupons</h1>
+        <h1 className="text-2xl font-bold mb-4">Manage Coupons</h1>
+        <div className='container mx-auto px-4 sm:px-8'>
+          <div className='py-8'>
+            <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
+              <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
+                <table className='min-w-full leading-normal'>
+                  <thead className='bg-[#233876] text-white'>
+                    <tr >
+                      <th
+                        scope='col'
+                        className='px-5 py-3   border-b border-gray-200  text-left text-sm uppercase font-normal'
+                      >
+                        Coupon Name
+                      </th>
+                      <th
+                        scope='col'
+                        className='px-5 py-3  border-b border-gray-200   text-left text-sm uppercase font-normal'
+                      >
+                        Discount
+                      </th>
 
-      <div>
-        <button
-          className="bg-blue-900 text-white px-4 py-2 rounded hover:bg-blue-950"
-          onClick={() => setShowModal(true)}
-        >
-          Add Coupon
-        </button>
+                      <th
+                        scope='col'
+                        className='px-5 py-3  border-b border-gray-200   text-left text-sm uppercase font-normal'
+                      >
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      coupons.map(coupon => <CouponRow key={coupon._id} coupon={coupon} refetch={refetch} />)
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+      
+
+        <div className='flex justify-center items-center'>
+          <button
+            className="bg-blue-900 text-white text-center px-4 py-2 rounded hover:bg-blue-950"
+            onClick={() => setShowModal(true)}
+          >
+            Add Coupon
+          </button>
+        </div>
 
         {showModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -181,7 +182,7 @@ if(isLoading) return <LoadingSpinenr></LoadingSpinenr>
             </div>
           </div>
         )}
-      </div>
+     
     </div>
   );
 };
