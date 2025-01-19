@@ -1,9 +1,37 @@
 import React from 'react';
+import useAxiosSecure from '../../../Hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
 
-const MemberTableRow = ({member}) => {
+const MemberTableRow = ({member, refetch}) => {
 
+    const axiosSecure = useAxiosSecure()
+
+    
     const handleRemove = (id)=>{
         console.log(id)
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, remove it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                axiosSecure.patch(`${import.meta.env.VITE_API_ULR}/users/role/${member?.email}`, { role: 'user' });
+                Swal.fire({
+                    title: "Removed!",
+                    text: "Member has been removed.",
+                    icon: "success"
+                  });
+
+                  refetch()
+            }
+          });
+
+
     }
     return (
         <tr>

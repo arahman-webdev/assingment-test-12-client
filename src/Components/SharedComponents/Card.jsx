@@ -24,7 +24,7 @@ const Card = ({ aprtment }) => {
         }
 
 
-        if (role === 'admin' || role === 'member') {
+        if (role === 'admin') {
             return Swal.fire({
                 icon: "error",
                 title: "Oops...",
