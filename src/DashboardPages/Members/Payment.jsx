@@ -5,6 +5,7 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAgreementData from "../../Hooks/useAgreementData";
 import LoadingSpinner from "../../Components/SharedComponents/Spinner";
 import { useQuery } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 
 const Payment = () => {
   const { user, loading } = useContext(AuthContext);
@@ -54,18 +55,46 @@ const Payment = () => {
   const handlePayment = async () => {
     try {
       // Mock payment submission
-      await axiosSecure.post("/store-payment", {
+      const response = await axiosSecure.post("/store-payment", {
         email: user?.email,
         amount: discountedRent,
         date: new Date(),
         status: "Paid",
       });
-
-      navigate("/"); // Redirect to homepage after successful payment
+  
+      if (response.status === 200) {
+        // Show success alert
+        Swal.fire({
+          title: "Payment Successful!",
+          text: "Thank you for your payment. Your transaction was successful.",
+          icon: "success",
+          confirmButtonText: "Okay",
+        }).then(() => {
+          // Redirect to the dashboard or another page
+          window.location.href = "/dashboard"; // Adjust based on your app's routing
+        });
+      } else {
+        // Show an error alert if the response is not 200
+        Swal.fire({
+          title: "Payment Error!",
+          text: "Something went wrong. Please try again.",
+          icon: "error",
+          confirmButtonText: "Retry",
+        });
+      }
     } catch (error) {
       console.error("Payment failed:", error);
+  
+      // Show error alert for failed requests
+      Swal.fire({
+        title: "Payment Failed!",
+        text: "An error occurred during payment. Please try again later.",
+        icon: "error",
+        confirmButtonText: "Retry",
+      });
     }
   };
+  
 
   // Show loading spinner until data is ready
   if (isLoading || loading || couponsLoading) return <LoadingSpinner />;

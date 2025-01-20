@@ -43,6 +43,7 @@ const AdminRequestRow = ({ agreement, refetch }) => {
             refetch(); // Refresh the data
         } catch (error) {
             Swal.fire('Error', 'Failed to process the request. Try again later.', 'error');
+            console.log(error)
         }
     };
 
