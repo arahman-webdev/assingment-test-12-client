@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import useAxiosSecure from '../../Hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
@@ -40,6 +40,11 @@ const MakeAnnouncement = () => {
         form.reset()
     }
   };
+
+
+      useEffect(() => {
+          document.title = "Dashboard-admin-announcement | AptEase";
+      }, []);
 
   return (
     <div className="container mx-auto p-6">

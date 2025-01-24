@@ -69,9 +69,7 @@ const MemberProfile = ({ user, role, acceptedItem }) => {
               </div>
 
             </div>
-            <Link to='/dashboard/make-payment' className="flex flex-col col-span-2 bg-blue-900 p-3 text-white">
-              <button>$Pay Now</button>
-            </Link>
+
           </div>
         </div>
       </div>

@@ -71,7 +71,7 @@ const Payment = () => {
           confirmButtonText: "Okay",
         }).then(() => {
           // Redirect to the dashboard or another page
-          window.location.href = "/dashboard"; // Adjust based on your app's routing
+          window.location.href = "/dashboard/payment-history"; // Adjust based on your app's routing
         });
       } else {
         // Show an error alert if the response is not 200
@@ -95,6 +95,10 @@ const Payment = () => {
     }
   };
   
+
+  useEffect(() => {
+    document.title = "Dashboard-payment | AptEase";
+}, []);
 
   // Show loading spinner until data is ready
   if (isLoading || loading || couponsLoading) return <LoadingSpinner />;

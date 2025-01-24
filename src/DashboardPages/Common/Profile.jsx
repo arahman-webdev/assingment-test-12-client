@@ -1,44 +1,50 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
 import useRole from "../../Hooks/useRole";
-import LoadingSpinenr from "../../Components/SharedComponents/Spinner";
+import LoadingSpinner from "../../Components/SharedComponents/Spinner";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
-import MemberProfile from "../Members/memberProfile";
+import MemberProfile from "../Members/MemberProfile";
 import AdminProfile from "../Admin/AdminProfile";
 import UserProfile from "../Users/UserProfile";
 
-const ProfilePage = ({item}) => {
-  const { user, loading } = useContext(AuthContext);
-  const [role,isLoading] = useRole()
+const ProfilePage = () => {
+  const { user, loading: userLoading } = useContext(AuthContext);
+  const [role, roleLoading] = useRole();
   const axiosSecure = useAxiosSecure();
 
-  const { data: acceptedItem = [] } = useQuery({
-    queryKey: ["acceptedItems"],
+  const {
+    data: acceptedItem = [],
+    isLoading: acceptedItemLoading,
+  } = useQuery({
+    queryKey: ["acceptedItems", user?.email],
     queryFn: async () => {
-      const { data } = await axiosSecure.get(`/accepted-request/${user?.email}`);
+      if (!user?.email) return [];
+      const { data } = await axiosSecure.get(`/accepted-request/${user.email}`);
       return data;
     },
+    enabled: !!user?.email, // Ensure the query only runs when user email is available
   });
 
-  console.log(acceptedItem)
-  console.log(item)
+  // Update document title based on the role
+  useEffect(() => {
+    if (!role || roleLoading) return;
+    document.title = `Dashboard - ${role.charAt(0).toUpperCase() + role.slice(1)} Profile | AptEase`;
+  }, [role, roleLoading]);
 
-if(isLoading || loading) return <LoadingSpinenr></LoadingSpinenr>
-  
+  // Loading states
+  if (userLoading || roleLoading || acceptedItemLoading) {
+    return <LoadingSpinner />;
+  }
 
-
-
-
-
-
-if (role === "admin") {
-  return <AdminProfile user={user} role={role} loading={loading} />;
-} else if (role === "member") {
-  return <MemberProfile user={user} role={role} loading={loading} acceptedItem={acceptedItem} />;
-} else {
-  return <UserProfile user={user} role={role} loading={loading}/>;
-}
+  // Render the appropriate profile component based on the role
+  if (role === "admin") {
+    return <AdminProfile user={user} role={role} />;
+  } else if (role === "member") {
+    return <MemberProfile user={user} role={role} acceptedItem={acceptedItem} />;
+  } else {
+    return <UserProfile user={user} role={role} />;
+  }
 };
 
 export default ProfilePage;

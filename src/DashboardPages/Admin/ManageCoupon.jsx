@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
@@ -26,6 +26,11 @@ const ManageCoupon = () => {
     }
   })
 
+
+  useEffect(() => {
+    document.title = "Dashboard-manage-coupon | AptEase";
+}, []);
+
   if (isLoading) return <LoadingSpinenr></LoadingSpinenr>
 
 
@@ -42,7 +47,8 @@ const ManageCoupon = () => {
     const couponData = {
       name,
       discount,
-      description
+      description,
+      available: true,
     };
 
     try {

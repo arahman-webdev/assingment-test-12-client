@@ -15,6 +15,8 @@ import AgreementRequest from "../DashboardPages/Admin/AgreementRequest";
 import MakePayment from "../DashboardPages/Members/MakePayment";
 import Payment from "../DashboardPages/Members/Payment";
 import PrivateMember from "./PrivateDahsboard/PrivateMember";
+import PaymentHistory from "../DashboardPages/Members/PaymentHistory";
+import Announcement from "../DashboardPages/Common/Announcement";
 
 
 const routes = createBrowserRouter([
@@ -52,6 +54,10 @@ const routes = createBrowserRouter([
                 element:<Profile></Profile>
             },
             {
+                path: 'announcements',
+                element: <Announcement />
+            },
+            {
                 path: 'manage-users',
                 element: <PrivateAdmin><ManageUser></ManageUser></PrivateAdmin>
             },
@@ -72,12 +78,17 @@ const routes = createBrowserRouter([
 
             {
                 path: 'make-payment',
-                element:<MakePayment></MakePayment>
+                element:<PrivateMember><MakePayment></MakePayment></PrivateMember>
             },
             {
                 path: 'payment',
-                element:<Payment></Payment>
+                element:<PrivateMember><Payment></Payment></PrivateMember>
             },
+            {
+                path: 'payment-history',
+                element: <PrivateMember><PaymentHistory></PaymentHistory></PrivateMember>
+            },
+
 
 
         ],

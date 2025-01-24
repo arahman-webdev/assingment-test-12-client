@@ -7,6 +7,7 @@ import Cover from '../Components/SharedComponents/Cover';
 import Services from '../Components/Services';
 import Testimonial from '../Components/Testimonial';
 import QuestionAnswers from '../Components/QuestionAnswers';
+import Coupons from '../Components/Coupons';
 
 
 
@@ -18,6 +19,7 @@ const Home = () => {
     return (
         <div>
        <Carousel></Carousel>
+       <Coupons></Coupons>
        <AboutBuilding></AboutBuilding>
        <Cover></Cover>
        <Services></Services>

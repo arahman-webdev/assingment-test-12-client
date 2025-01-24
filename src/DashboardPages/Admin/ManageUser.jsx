@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useAxiosSecure from '../../Hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinenr from '../../Components/SharedComponents/Spinner';
@@ -17,6 +17,11 @@ const ManageUser = () => {
             return data
         }
     })
+
+
+      useEffect(() => {
+        document.title = "Dashboard-manage-member | AptEase";
+    }, []);
 
     if(isLoading) return <LoadingSpinenr></LoadingSpinenr>
 
@@ -48,6 +53,12 @@ console.log(members)
                                             className='px-5 py-3  border-b border-gray-200   text-left text-sm uppercase font-normal'
                                         >
                                             User Email
+                                        </th>
+                                        <th
+                                            scope='col'
+                                            className='px-5 py-3  border-b border-gray-200   text-left text-sm uppercase font-normal'
+                                        >
+                                            User Role
                                         </th>
                                         <th
                                             scope='col'

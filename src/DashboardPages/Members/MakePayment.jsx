@@ -1,16 +1,15 @@
-
 import { useQuery } from "@tanstack/react-query";
-import LoadingSpinenr from "../../Components/SharedComponents/Spinner";
+import LoadingSpinner from "../../Components/SharedComponents/Spinner";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
-import { Link, NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const MakePayment = () => {
-  const axiosSecure = useAxiosSecure()
-  const { user, loading } = useContext(AuthContext)
-
-  
+  const axiosSecure = useAxiosSecure();
+  const { user, loading } = useContext(AuthContext);
+  const [selectedMonth, setSelectedMonth] = useState("");
+  const navigate = useNavigate();
 
   const { data: acceptedItem = {}, isLoading } = useQuery({
     queryKey: ["acceptedItems", user?.email],
@@ -24,17 +23,28 @@ const MakePayment = () => {
     floorNo = "",
     roomNo = "",
     blockName = "",
-    date = "",
     rent = "",
     apartmentNo = "",
   } = acceptedItem;
 
 
-  if (loading || isLoading) return <LoadingSpinenr></LoadingSpinenr>;
+    useEffect(() => {
+      document.title = "Dashboard-make-payment | AptEase";
+  }, []);
+  
+
+  if (loading || isLoading) return <LoadingSpinner />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Payment submitted!");
+
+    if (!selectedMonth) {
+      alert("Please select a month before submitting.");
+      return;
+    }
+
+    console.log("Payment submitted for:", selectedMonth);
+    navigate("/dashboard/payment");
   };
 
   return (
@@ -59,9 +69,7 @@ const MakePayment = () => {
 
           {/* Floor */}
           <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              Floor
-            </label>
+            <label className="block text-gray-700 font-medium mb-2">Floor</label>
             <input
               type="text"
               value={floorNo}
@@ -98,9 +106,7 @@ const MakePayment = () => {
 
           {/* Rent */}
           <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              Rent
-            </label>
+            <label className="block text-gray-700 font-medium mb-2">Rent</label>
             <input
               type="text"
               value={`$${rent}/month`}
@@ -111,13 +117,12 @@ const MakePayment = () => {
 
           {/* Month */}
           <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              Month
-            </label>
+            <label className="block text-gray-700 font-medium mb-2">Month</label>
             <select
               className="w-full border border-gray-300 rounded-lg px-4 py-2"
               required
-              defaultValue=""
+              value={selectedMonth}
+              onChange={(e) => setSelectedMonth(e.target.value)}
             >
               <option value="" disabled>
                 Select Month
@@ -144,14 +149,12 @@ const MakePayment = () => {
           </div>
 
           {/* Submit Button */}
-          <NavLink to='/dashboard/payment' className="text-center">
-            <button
-              type="submit"
-              className="bg-blue-900 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition"
-            >
-              Submit Payment
-            </button>
-          </NavLink>
+          <button
+            type="submit"
+            className="bg-blue-900 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition w-full"
+          >
+            Submit Payment
+          </button>
         </form>
       </div>
     </div>

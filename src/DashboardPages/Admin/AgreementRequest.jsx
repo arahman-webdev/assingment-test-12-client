@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import useAxiosSecure from '../../Hooks/useAxiosSecure';
 import AdminRequestRow from '../../Components/Dahsboard/TableRow/AdminRequestRow';
 import { AuthContext } from '../../Providers/AuthProvider';
+import LoadingSpinenr from '../../Components/SharedComponents/Spinner';
 
 
 const AgreementRequest = () => {
@@ -18,6 +19,11 @@ const AgreementRequest = () => {
         }
     })
 
+    useEffect(() => {
+        document.title = "Dashboard-admin-agreement | AptEase";
+    }, []);
+
+    if(isLoading) return <LoadingSpinenr></LoadingSpinenr>
 
     console.log(customerAgreements)
 

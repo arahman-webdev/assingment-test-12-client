@@ -4,12 +4,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import useRole from "../../Hooks/useRole";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const Card = ({ aprtment }) => {
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
     const [role] = useRole()
+    const axiosSecure = useAxiosSecure()
 
     const { _id, apartmentNo, floorNo, blockName, roomNo, rent, image } = aprtment || {};
 
@@ -17,67 +19,74 @@ const Card = ({ aprtment }) => {
 
     const handleClick = () => {
         console.log("clicked");
-
+      
         if (!user) {
-            // Redirect to login with the current location
-            return navigate("/login", { state: { from: location }, replace: true });
+          // Redirect to login with the current location
+          return navigate("/login", { state: { from: location }, replace: true });
         }
-
-
-        if (role === 'admin') {
-            return Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "You are not elligible to make a request!",
-
-            });
+      
+        if (role === "admin") {
+          return Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "You are not eligible to make a request!",
+          });
         }
-
-
-
+      
         // Get today's date
         const today = new Date();
         const formattedDate = today.toISOString().split("T")[0]; // Format as YYYY-MM-DD
-
+      
         const agreementInfo = {
-            customer: {
-                name: user?.displayName,
-                email: user?.email,
-                image: user?.photoURL,
-            },
-            agreementId: _id,
-            blockName: blockName,
-            image: image,
-            rent: rent,
-            floorNo: floorNo,
-            roomNo: roomNo,
-            apartmentNo: apartmentNo,
-            status: "Pending",
-            date: formattedDate, // Add the current date
+          customer: {
+            name: user?.displayName,
+            email: user?.email,
+          },
+          agreementId: _id,
+          blockName,
+          image,
+          rent,
+          floorNo,
+          roomNo,
+          apartmentNo,
+          status: "Pending",
+          date: formattedDate, // Add the current date
         };
-
-        axios.post(`${import.meta.env.VITE_API_ULR}/agreements`, agreementInfo)
-            .then((res) => {
-                const data = res.data;
-                if (data.insertedId) {
-                    Swal.fire({
-                        title: "Agreement Submitted!",
-                        text: "Your agreement request has been submitted successfully.",
-                        icon: "success",
-                        confirmButtonText: "OK",
-                    });
-                }
-            })
-            .catch((err) => {
-                console.error(err);
-                Swal.fire({
-                    title: "Error",
-                    text: "Agreement already exists for this user.",
-                    icon: "error",
-                    confirmButtonText: "OK",
-                });
-            });
-    };
+      
+        axiosSecure
+          .post(`/agreements`, agreementInfo)
+          .then((res) => {
+            const data = res.data;
+            if (data.insertedId) {
+              Swal.fire({
+                title: "Agreement Submitted!",
+                text: "Your agreement request has been submitted successfully.",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+      
+            if (err.response?.status === 400) {
+              Swal.fire({
+                title: "Error",
+                text: err.response.data.message, // Use the message from the backend
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Error",
+                text: "Something went wrong. Please try again later.",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          });
+      };
+      
 
     return (
         <div className=" bg-[#ECEBF8] rounded-lg hover:shadow-xl overflow-hidden border transition-shadow duration-500 group">

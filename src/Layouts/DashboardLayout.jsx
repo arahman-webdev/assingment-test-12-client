@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Providers/AuthProvider";
 import {
   FaCalendarAlt,
@@ -15,13 +15,24 @@ import {
 import { MdManageAccounts } from "react-icons/md";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import useRole from "../Hooks/useRole";
+import { TfiAnnouncement } from "react-icons/tfi";
 
 const DashboardLayout = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logOutUser } = useContext(AuthContext);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [role, isLoading] = useRole()
+  const navigate = useNavigate()
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+
+
+  const handleLogout = () => {
+    logOutUser().then((res) => {
+      console.log(res);
+      navigate('/login');
+    });
+  };
 
   return (
     <div className="relative min-h-screen flex bg-gray-100">
@@ -50,14 +61,28 @@ const DashboardLayout = () => {
             <FaHome className="mr-3" /> Home
           </NavLink>
           <NavLink
-            to="/dashboard/my-profile"
-            className={({ isActive }) =>
-              `flex items-center px-4 py-2 rounded-md hover:bg-blue-700 ${isActive ? "bg-blue-700" : ""
-              }`
-            }
-          >
-            <FaCalendarAlt className="mr-3" /> My Profile
-          </NavLink>
+                to="/dashboard/my-profile"
+                className={({ isActive }) =>
+                  `flex items-center px-4 py-2 rounded-md hover:bg-blue-700 ${isActive ? "bg-blue-700" : ""
+                  }`
+                }
+              >
+                <FaCalendarAlt className="mr-3" /> My Profile
+              </NavLink>
+          {
+            role === 'user' && <>
+
+              <NavLink
+                to="/dashboard/announcements"
+                className={({ isActive }) =>
+                  `flex items-center px-4 py-2 rounded-md hover:bg-blue-700 ${isActive ? "bg-blue-700" : ""
+                  }`
+                }
+              >
+                <TfiAnnouncement className="mr-3" /> Announcements
+              </NavLink>
+            </>
+          }
           {/* admin  */}
 
           {
@@ -113,6 +138,7 @@ const DashboardLayout = () => {
           {
             role === 'member' &&
             <>
+
               <NavLink
                 to="/dashboard/make-payment"
                 className={({ isActive }) =>
@@ -136,13 +162,22 @@ const DashboardLayout = () => {
                 <FaMoneyBillTransfer className="mr-3" /> Payment History
 
               </NavLink>
+              <NavLink
+                to="/dashboard/announcements"
+                className={({ isActive }) =>
+                  `flex items-center px-4 py-2 rounded-md hover:bg-blue-700 ${isActive ? "bg-blue-700" : ""
+                  }`
+                }
+              >
+                <TfiAnnouncement className="mr-3" /> Announcements
+              </NavLink>
             </>
           }
 
 
 
 
-          <button className="flex items-center px-4 py-2 rounded-md hover:bg-red-700">
+          <button onClick={handleLogout} className="flex items-center px-4 py-2 rounded-md hover:bg-red-700">
             <FaSignOutAlt className="mr-3" /> Logout
           </button>
         </nav>

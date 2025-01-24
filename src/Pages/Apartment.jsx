@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '../Components/SharedComponents/Card';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../Hooks/useAxiosSecure';
 import LoadingSpinenr from '../Components/SharedComponents/Spinner';
+import Swal from 'sweetalert2';
 
 const Apartment = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -39,12 +40,28 @@ const Apartment = () => {
 
     // Handle Rent Range Search
     const handleSearch = () => {
+        if (minRent && maxRent && Number(minRent) > Number(maxRent)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Rent Range',
+                text: 'Minimum rent cannot exceed maximum rent.',
+                confirmButtonColor: '#233876',
+            });
+            return;
+        }
         setSearchParams({ minRent, maxRent });
         setCurrentPage(1); // Reset to the first page when a new search is performed
+
     };
+    
+
+
+    useEffect(() => {
+        document.title = "Apartments room | AptEase";
+    }, []);
 
     return (
-        <div>
+        <div className='mb-8'>
             {/* Hero Section */}
             <div
                 className="relative bg-cover bg-center h-96 md:h-[500px]"
@@ -52,7 +69,7 @@ const Apartment = () => {
                     backgroundImage: `url('https://i.ibb.co.com/M50BVM2/card.jpg')`,
                 }}
             >
-                <div className="absolute inset-0 bg-black bg-opacity-65"></div>
+                <div className="absolute inset-0 bg-black bg-opacity-40"></div>
                 <div className="relative z-10 flex justify-center items-center h-full">
                     <h1 className="text-white text-4xl md:text-5xl font-bold">Welcome to Our Apartments</h1>
                 </div>
