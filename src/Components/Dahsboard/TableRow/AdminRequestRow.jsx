@@ -4,7 +4,7 @@ import axios from 'axios';
 import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 
 const AdminRequestRow = ({ agreement, refetch }) => {
-    const { _id, blockName, floorNo,roomNo, apartmentNo, rent, date, customer, agreementId } = agreement || {};
+    const { _id, blockName, floorNo, roomNo, apartmentNo, rent, date, customer, agreementId, status } = agreement || {};
     const axiosSecure = useAxiosSecure()
 
     console.log(agreement)
@@ -22,7 +22,7 @@ const AdminRequestRow = ({ agreement, refetch }) => {
         date: formattedDate,
         name: customer?.name,
         email: customer?.email
-        
+
     }
 
     const handleAccept = async () => {
@@ -61,7 +61,7 @@ const AdminRequestRow = ({ agreement, refetch }) => {
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Yes, reject it!",
             });
-    
+
             // If user confirms, update agreement status
             if (result.isConfirmed) {
                 await axiosSecure.patch(`${import.meta.env.VITE_API_ULR}/agreements/status/${_id}`, { status: 'Checked' });
@@ -74,7 +74,7 @@ const AdminRequestRow = ({ agreement, refetch }) => {
                     text: "Agreement has been rejected successfully.",
                     icon: "info",
                 });
-    
+
                 // Refresh the data
                 refetch();
             }
@@ -83,7 +83,7 @@ const AdminRequestRow = ({ agreement, refetch }) => {
             Swal.fire('Error', 'Failed to process the request. Try again later.', 'error');
         }
     };
-    
+
 
     return (
         <tr>
@@ -94,6 +94,11 @@ const AdminRequestRow = ({ agreement, refetch }) => {
             <td className='px-5 py-5 border-b bg-white text-sm'>{apartmentNo}</td>
             <td className='px-5 py-5 border-b bg-white text-sm'>{rent}</td>
             <td className='px-5 py-5 border-b bg-white text-sm'>{date}</td>
+            <td
+                className={`px-5 py-5 border-b bg-white text-sm ${status === 'Checked' ? 'text-green-600' : 'text-red-500'}`}
+            >
+                {status}
+            </td>
             <td className='px-5 py-5 border-b bg-white text-sm'>
                 <button
                     onClick={handleAccept}
@@ -104,7 +109,7 @@ const AdminRequestRow = ({ agreement, refetch }) => {
             </td>
             <td className='px-5 py-5 border-b bg-white text-sm'>
                 <button
-                    onClick={()=>handleReject(_id)}
+                    onClick={() => handleReject(_id)}
                     className='bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300'
                 >
                     Reject
