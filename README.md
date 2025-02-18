@@ -37,8 +37,8 @@ MongoDB & Mongoose (Database)
 "react-sweet alert2": "^4.x"
 
 # How to Run the Project Locally.
-Clone the Repository
-Install Dependencies
-Setup Environment Variables
-configure Firebase in your project
+Clone the Repository,
+Install Dependencies,
+Setup Environment Variables,
+configure Firebase in your project and
 using MongoDB, ensure MongoDB is running locally or on MongoDB Atlas.
