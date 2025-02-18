@@ -1,8 +1,44 @@
-# React + Vite
+# 🏨 Hotel Booking Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Live Url: https://aptease-app.netlify.app/
 
-Currently, two official plugins are available:
+ The Hotel Booking Website allows users to search and book hotels, view available rooms, and manage their bookings with ease. The platform features a responsive design and an intuitive user interface for an optimal booking experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+ # 🚀 Key Features
+✅ Search Hotels – Browse hotels by location, price, and availability.
+✅ Room Booking – Users can book available rooms and manage their reservations.
+✅ User Authentication – Secure login and registration for users.
+✅ Responsive Design – Optimized for both desktop and mobile devices.
+✅ Admin Dashboard – Admins can manage hotel listings and bookings.
+
+# 🛠 Main Technologies Used
+Frontend:
+React.js (Component-based UI)
+React Router (Routing and Navigation)
+Tailwind CSS (Styling)
+Axios (API Requests)
+Firebase Authentication (User Login/Signup)
+
+# Backend:
+Node.js & Express.js (API & Server)
+MongoDB & Mongoose (Database)
+
+
+# 📦 Project Dependencies
+"react": "^18.x",
+"react-dom": "^18.x",
+"react-router-dom": "^6.x",
+"axios": "^1.x",
+"Tanstack query": "^1.x",
+"tailwindcss": "^3.x",
+"firebase": "^9.x",
+"react-icons": "^4.x"
+"react-map": "^4.x"
+"react-sweet alert2": "^4.x"
+
+# How to Run the Project Locally.
+Clone the Repository
+Install Dependencies
+Setup Environment Variables
+configure Firebase in your project
+using MongoDB, ensure MongoDB is running locally or on MongoDB Atlas.
